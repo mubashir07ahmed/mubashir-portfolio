@@ -12,12 +12,12 @@ test('outside-profile questions stay restricted while simple questions work', ()
     assert.equal(isProfileQuestion(question), false, question);
   }
 
-  assert.match(getLocalAnswer('Explain quantum computing in detail').text, /focused on Mubashir’s profile/i);
-  assert.equal(getLocalAnswer('What is 2 + 2?').text, 'The answer is 4.');
-  assert.match(getLocalAnswer('What is AI?').text, /field of building systems/i);
-  assert.match(getLocalAnswer('hiiii').text, /Hi there/i);
-  assert.match(getLocalAnswer('How are you?').text, /ready to help/i);
-  assert.match(getLocalAnswer('What is a website?').text, /collection of pages/i);
+  assert.match(getLocalAnswer('Explain quantum computing in detail').text, /portfolio-only AI assistant/i);
+  assert.match(getLocalAnswer('What is 2 + 2?').text, /portfolio-only AI assistant/i);
+  assert.match(getLocalAnswer('What is AI?').text, /can’t answer general questions/i);
+  assert.match(getLocalAnswer('hiiii').text, /portfolio-only AI assistant/i);
+  assert.match(getLocalAnswer('How are you?').text, /portfolio-only AI assistant/i);
+  assert.match(getLocalAnswer('What is a website?').text, /can’t answer general questions/i);
   assert.match(getLocalAnswer('What are you?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
   assert.match(getLocalAnswer('What can you do?').text, /help visitors, recruiters, and companies/i);
   assert.equal(isProfileQuestion('What are you?'), true);

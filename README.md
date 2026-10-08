@@ -42,16 +42,18 @@ The site includes:
 - AI chatbot with portfolio knowledge
 - Responsive navigation with reduced-motion support
 
-## AI chatbot: Groq, OpenAI, Gemini, and fallback mode
+## AI chatbot: portfolio-only by design
 
-The chatbot is designed to work in two layers:
+The chatbot is intentionally focused on Mubashir’s portfolio rather than acting as a general-purpose assistant:
 
-1. **Portfolio knowledge always works locally.** Questions about my education, skills, projects, achievements, resume, contact details, and coding profiles use the shared portfolio data and do not require an API key.
-2. **Open-ended conversational answers use a server-side provider.** The server supports Groq, OpenAI, Gemini, and the managed Manus provider.
+1. **Portfolio knowledge always works locally.** Questions about education, skills, projects, achievements, resume, contact details, coding profiles, and the ideas behind the website use the shared portfolio data and do not require an API key.
+2. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that this assistant is limited to the portfolio.
 
-### Recommended provider: Groq
+### Optional provider infrastructure
 
-Groq is the recommended starting point because it is fast and offers a free developer option subject to its current account limits and model availability. It works very well for this portfolio’s short conversational responses.
+The repository still includes secure provider wrappers for Groq, OpenAI, Gemini, and the managed Manus provider in `server/llm.js` so the project can add controlled AI-powered portfolio features later. The current portfolio-only route does not send unrelated visitor questions to any provider.
+
+Groq remains the recommended provider for a future controlled expansion because it is fast and offers a free developer option subject to its current account limits and model availability.
 
 The provider priority is:
 
@@ -59,9 +61,9 @@ The provider priority is:
 2. OpenAI
 3. Gemini
 4. Manus managed provider
-5. Local deterministic fallback when no provider is available
+5. Local deterministic portfolio answers
 
-Without any API key, the website still works normally for portfolio questions and supported simple questions. Only fully open-ended AI conversation falls back to a short local response.
+Without any API key, the website works normally for every supported portfolio question. No provider key is needed to explain Mubashir’s page content.
 
 ### Environment variables
 

@@ -3,8 +3,7 @@ import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer as createViteServer } from 'vite';
-import { getLocalAnswer, getProfileAnswer, isProfileQuestion, isRestrictedGeneralQuestion } from '../shared/chat.js';
-import { invokeLLM } from './llm.js';
+import { getProfileAnswer, isProfileQuestion } from '../shared/chat.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const app = express();
@@ -47,36 +46,11 @@ app.post('/api/chat', limitChatRequests, async (req, res) => {
 
   if (isProfileQuestion(message)) return res.json({ ...getProfileAnswer(message), scope: 'profile' });
 
-  if (isRestrictedGeneralQuestion(message)) {
-    return res.json({
-      text: 'I can chat about Mubashir and everyday topics, but I’m not set up for programming help or general-knowledge trivia.',
-      fallbackUsed: false,
-      scope: 'general',
-    });
-  }
-
-  const history = Array.isArray(req.body?.history)
-    ? req.body.history.filter((item) => item && (item.role === 'user' || item.role === 'assistant') && typeof item.content === 'string').slice(-8)
-    : [];
-  try {
-    const result = await invokeLLM({
-      messages: [
-        {
-          role: 'system',
-          content: 'You are the friendly AI Chatbot on Mubashir Ahmed’s portfolio. Answer normal everyday, conversational, personal, workplace, and light creative questions naturally and briefly. For questions about Mubashir, use only the portfolio facts supplied in the conversation or say that the detail is not available. Do not answer programming, coding, software-development, algorithm, or general-knowledge/trivia questions; politely say those are outside your role. Do not claim to be Mubashir. Keep answers under 100 words.',
-        },
-        ...history,
-        { role: 'user', content: message },
-      ],
-      maxTokens: 220,
-    });
-    const text = result?.choices?.[0]?.message?.content;
-    if (typeof text === 'string' && text.trim()) return res.json({ text: text.trim(), fallbackUsed: false, scope: 'general' });
-  } catch {
-    // Fall through to a deterministic friendly reply when the AI service is unavailable.
-  }
-
-  return res.json({ ...getLocalAnswer(message), fallbackUsed: false, scope: 'general' });
+  return res.json({
+    text: 'I’m Mubashir Ahmed’s portfolio-only AI assistant. I can answer questions about his education, projects, skills, learning journey, achievements, resume, contact details, and the ideas behind this website. I can’t answer general questions, calculations, or unrelated topics.',
+    fallbackUsed: false,
+    scope: 'general',
+  });
 });
 
 const isProduction = process.env.NODE_ENV === 'production';

@@ -1,6 +1,6 @@
 # Mubashir Ahmed — Portfolio
 
-A responsive dark editorial-style personal portfolio built with React, TypeScript, Tailwind CSS, Vite, Express, and Lucide React. Its typography and controls are sized for comfortable Mac readability, and its assistant can answer general questions as well as concise questions about Mubashir’s portfolio. Personal details stay grounded in editable profile facts; general questions use the server-side Manus LLM.
+A responsive dark editorial-style personal portfolio built with React, TypeScript, Tailwind CSS, Vite, Express, and Lucide React. Its typography and controls are sized for comfortable Mac readability, and its assistant can answer general questions as well as concise questions about Mubashir’s portfolio. Personal details stay grounded in editable profile facts; general questions use the server-side Groq LLM when `GROQ_API_KEY` is configured.
 
 ## Run locally
 
@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3000`. The Express app serves Vite in middleware mode for development, so the chat endpoint and frontend share one origin. To create a production bundle, run `pnpm build`; run it with `pnpm start` after the build.
+Open `http://localhost:3000`. The Express app serves Vite in middleware mode for development, so the chat endpoint and frontend share one origin. For general AI answers locally, set the key only in the server environment, for example `export GROQ_API_KEY=your_key_here` before `pnpm dev`. To create a production bundle, run `pnpm build`; run it with `pnpm start` after the build.
 
 ## Checks
 
@@ -41,8 +41,8 @@ The contact form validates required name, email, and message fields. With Mubash
 - `shared/profileData.js` — editable facts and explicit placeholders shared across client and server.
 - `shared/chat.js` — personal-profile answer rules and general-topic fallback answers.
 - `server/index.js` — Express API, request limits, dev middleware, and production static server.
-- `server/llm.js` — server-only `invokeLLM` helper for the platform chat-completions API.
+- `server/llm.js` — server-only OpenAI-compatible `invokeLLM` helper that prefers Groq and falls back to the managed platform provider.
 - `public/manus-routes.json` — public route manifest for the single-page site.
 - `app.config.ts` — durable project-logo metadata.
 
-In the managed deployment, the platform supplies its LLM credentials at runtime; there is no need to commit an `.env` file or a secret. Never put provider keys or tokens in client code or the repository.
+The managed deployment stores `GROQ_API_KEY` as a protected server secret. Never put provider keys or tokens in client code, `.env` files committed to the repository, or GitHub. Profile answers continue to work without a provider key; general conversational answers use the deterministic fallback when no server-side AI provider is available.

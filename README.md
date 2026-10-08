@@ -67,6 +67,16 @@ The provider priority is:
 
 Without any API key, the website still works for supported portfolio questions and paraphrases. The production container builds the semantic index automatically.
 
+For local development, `pnpm semantic:index` is **recommended but not required**. It downloads and caches `all-MiniLM-L6-v2` and prepares the vector store before the first question:
+
+```bash
+pnpm install
+pnpm semantic:index
+pnpm dev
+```
+
+If you skip `pnpm semantic:index`, the committed vector store is still available and the model/index can initialize automatically when the first semantic-search question is asked. The first initialization needs internet access; after the model is cached, offline retrieval works without an API key.
+
 ### Environment variables
 
 Set keys only on the server or hosting provider. Never put them in React code, `VITE_*` variables, GitHub, or public files.

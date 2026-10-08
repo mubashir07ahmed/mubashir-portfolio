@@ -41,12 +41,12 @@ export default function ContactSection() {
   return (
     <section className="contact-section page-section" id="contact" aria-labelledby="contact-title">
       <div className="page-container section-layout">
-        <SectionHeading number="07" eyebrow="LET’S CONNECT" title="Good ideas start with a conversation." description="Have a thoughtful question, project idea, or learning resource to share? Leave a note." />
+        <SectionHeading number="07" eyebrow="LET’S CONNECT" title="Good ideas start with a conversation." description="Have a project idea, collaboration thought, internship lead, or learning resource to share? I’d be glad to hear from you." />
         <div className="contact-layout">
           <div className="contact-aside">
             <div className="contact-aside-mark"><Mail size={22} /></div>
             <h3>Let’s make something useful.</h3>
-            <p>Reach Mubashir by email or through his professional profiles.</p>
+            <p>Whether you want to discuss a project, share feedback, or simply connect around AI, IoT, and software, email is the best place to start.</p>
             <div className="contact-detail"><span>EMAIL</span><code>{profileData.contact.email}</code></div>
             <div className="contact-socials">
               {socialLinks.length > 0 ? socialLinks.map(({ name, url, icon: Icon }) => <a className="social-link" href={url} target="_blank" rel="noreferrer" key={name}><Icon size={16} /> {name} <ArrowUpRight size={13} /></a>) : <span className="social-placeholder">Profile links are not available.</span>}

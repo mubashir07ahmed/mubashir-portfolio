@@ -18,7 +18,7 @@ export default function CodingSection() {
   return (
     <section className="coding-section page-section" id="coding" aria-labelledby="coding-title">
       <div className="page-container section-layout">
-        <SectionHeading number="05" eyebrow="WHAT I LIKE TO EXPLORE" title="Thinking in systems." description="A frequent coder focused on Data Structures and Algorithms, problem solving, and intelligent products." />
+        <SectionHeading number="05" eyebrow="WHAT I LIKE TO EXPLORE" title="Thinking in systems." description="I use coding practice to become more deliberate: break a problem down, understand the trade-offs, and build a solution that can grow." />
         <div className="coding-content">
           <div className="coding-groups">
             {groups.map(({ title, icon: Icon, values }, index) => <article className="coding-group glass-card" key={title}>

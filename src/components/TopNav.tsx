@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDownToLine, Menu, MessageCircle, X } from 'lucide-react';
 import { profileData } from '../../shared/profileData.js';
 
@@ -15,7 +15,25 @@ const navItems = [
 
 export default function TopNav({ onChatOpen }: TopNavProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState('#home');
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const sections = ['home', ...navItems.map((item) => item.href.slice(1))]
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActiveHref(`#${visible.target.id}`);
+    }, { rootMargin: '-28% 0px -58% 0px', threshold: [0.05, 0.2, 0.5] });
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <header className="site-header">
@@ -27,7 +45,7 @@ export default function TopNav({ onChatOpen }: TopNavProps) {
         {menuOpen ? <X size={21} /> : <Menu size={21} />}
       </button>
       <nav id="primary-navigation" className={`primary-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
-        {navItems.map((item) => <a key={item.href} href={item.href} onClick={closeMenu}>{item.label}</a>)}
+        {navItems.map((item) => <a key={item.href} className={activeHref === item.href ? 'is-active' : undefined} aria-current={activeHref === item.href ? 'page' : undefined} href={item.href} onClick={closeMenu}>{item.label}</a>)}
         <div className="nav-mobile-actions">
           <a className="button button--outline button--small" href={profileData.resumePath} target="_blank" rel="noreferrer">View resume</a>
           <button className="button button--primary button--small" type="button" onClick={() => { closeMenu(); onChatOpen(); }}><MessageCircle size={15} /> Ask AI Chatbot</button>

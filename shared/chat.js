@@ -20,7 +20,7 @@ export function isProfileQuestion(rawMessage) {
   const namesMubashir = /\b(?:mohammed|mubashir|ahmed)\b/.test(question);
   const pageContext = includesAny(question, [
     'portfolio', 'on this page', 'on the website', 'this website', 'site section', 'navigation',
-    'about section', 'skills section', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests',
+    'about section', 'skills section', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests', 'ai assistant', 'chatbot', 'provider',
     'github', 'linkedin', 'leetcode', 'hackerrank', 'codechef', 'vnr', 'vjiet',
     'prompt craft', 'synthvision', 'krithomedh', 'question solver', 'answer generator', 'lost and found',
     'to-do app', 'full-stack chatbot',
@@ -56,6 +56,14 @@ export function getProfileAnswer(rawMessage) {
 
   if (includesAny(question, ['what are you', 'who are you', 'what is your name', 'what can you do', 'how can you help', 'what do you do', 'are you an ai', 'are you a chatbot', 'tell me about yourself'])) {
     return { text: profileText('I’m the AI Chatbot on Mubashir Ahmed’s portfolio. I can help visitors, recruiters, and companies explore all of the information presented on this page, including his education, skills, projects, learning journey, achievements, coding profiles, contact details, and resume.') };
+  }
+
+  if (includesAny(question, ['what makes this portfolio different', 'why this portfolio', 'how does this portfolio work', 'what is special about this portfolio'])) {
+    return { text: profileText('The portfolio is designed to feel like a clear, honest record of Mubashir’s progress. It combines a readable editorial interface, project details, a terminal-style profile panel, a shared source of truth for the content, and an assistant that can explain the same information without inventing personal facts.') };
+  }
+
+  if (includesAny(question, ['how does the chatbot work', 'how does the ai assistant work', 'does the chatbot need an api key', 'without an api key'])) {
+    return { text: profileText('The assistant first uses local portfolio knowledge for Mubashir’s education, projects, skills, achievements, resume, and contact details. If a server-side provider is configured, it can also answer short open-ended questions. Without a provider key, the portfolio still works and uses a concise local fallback.') };
   }
 
   if (/resume|cv|curriculum vitae/.test(question)) {

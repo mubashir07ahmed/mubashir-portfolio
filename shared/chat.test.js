@@ -49,6 +49,8 @@ test('the chatbot can explain detailed page content', () => {
   assert.match(getLocalAnswer('Where is Mubashir based?').text, /Hyderabad, Telangana, India/i);
   assert.match(getLocalAnswer("What's SynthVision?").text, /hackathon.*finalist/i);
   assert.match(getLocalAnswer("What's Krithomedh?").text, /AI\/ML and IoT Club/i);
-  assert.match(getLocalAnswer("What's the AI Full-Stack Chatbot?").text, /API integration/i);
+  assert.match(getLocalAnswer("What's AI Full-Stack Chatbot?").text, /API integration/i);
   assert.match(getLocalAnswer("What's Prompt Craft?").text, /Winner/i);
+  assert.match(getLocalAnswer('What makes this portfolio different?').text, /clear, honest record/i);
+  assert.match(getLocalAnswer('How does the chatbot work without an API key?').text, /local portfolio knowledge/i);
 });

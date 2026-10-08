@@ -2,23 +2,23 @@ import { BrainCircuit, Code2, GraduationCap, MoveUpRight, Sparkles } from 'lucid
 import SectionHeading from '../components/SectionHeading';
 
 const highlights = [
-  { icon: BrainCircuit, title: 'AI & Machine Learning', copy: 'Exploring intelligent systems and emerging AI experiences.' },
-  { icon: Code2, title: 'Full-Stack Development', copy: 'Connecting responsive interfaces with useful backend services.' },
-  { icon: GraduationCap, title: 'Data Structures & Algorithms', copy: 'Practicing core concepts and strengthening problem solving.' },
-  { icon: Sparkles, title: 'Continuous Learning', copy: 'Building, reflecting, and improving one project at a time.' },
+  { icon: BrainCircuit, title: 'AI & Machine Learning', copy: 'Learning how intelligent systems become useful products, not just demos.' },
+  { icon: Code2, title: 'Full-Stack Development', copy: 'Connecting thoughtful interfaces with APIs, databases, and practical workflows.' },
+  { icon: GraduationCap, title: 'Data Structures & Algorithms', copy: 'Strengthening the foundations that make better problem solving possible.' },
+  { icon: Sparkles, title: 'Continuous Learning', copy: 'Turning coursework, experiments, and feedback into steady progress.' },
 ];
 
 export default function AboutSection() {
   return (
     <section className="about-section page-section" id="about" aria-labelledby="about-title">
       <div className="page-container section-layout">
-        <SectionHeading number="01" eyebrow="A LITTLE ABOUT ME" title="Curiosity, made practical." description="I’m drawn to the ideas behind the interface—and to the process of turning those ideas into something useful." />
+        <SectionHeading number="01" eyebrow="A LITTLE ABOUT ME" title="Curiosity, made practical." description="I’m interested in what happens behind the interface—and in making that hidden work useful to real people." />
         <div className="about-content">
           <div className="about-copy">
-            <p className="lead-copy">I’m <strong>Mubashir Ahmed</strong>, currently pursuing my 2nd year of B.Tech in Internet of Things (IoT) at VNR VJIET, with a strong interest in Artificial Intelligence, Machine Learning, software development, and problem solving.</p>
-            <p>I enjoy building practical applications that bring AI together with full-stack development, chatbot systems, APIs, and automation. I’m especially interested in understanding how technologies work behind the scenes, then turning a promising idea into a working project.</p>
-            <p>I work with C, Java, Python, HTML, CSS, JavaScript, AI APIs, chatbot development, full-stack development, and MySQL. Alongside building, I actively practice data structures, algorithms, problem solving, and object-oriented programming.</p>
-            <p>My goal is to grow as an AI/ML, full-stack, and IoT developer while building meaningful applications that solve real-world problems.</p>
+            <p className="lead-copy">I’m <strong>Mubashir Ahmed</strong>, a 2nd-year B.Tech Internet of Things student at VNR VJIET. I’m curious about how software, intelligent systems, and connected devices can work together to solve everyday problems.</p>
+            <p>I learn best by building. My projects have taken me through chatbots, question-solving tools, PDF automation, task management, and a campus lost-and-found idea. Each one helps me understand a little more about turning a rough idea into a usable flow.</p>
+            <p>My current toolkit includes C, Java, Python, HTML, CSS, JavaScript, AI APIs, chatbot development, full-stack development, and MySQL. I also make time for data structures, algorithms, object-oriented programming, and the fundamentals that support good engineering decisions.</p>
+            <p>My direction is simple: keep improving as an AI/ML, full-stack, and IoT developer while building work that is clear, useful, and honest about what I’m still learning.</p>
             <a className="text-link about-link" href="#journey">Follow my learning journey <MoveUpRight size={15} /></a>
           </div>
           <div className="highlight-grid">

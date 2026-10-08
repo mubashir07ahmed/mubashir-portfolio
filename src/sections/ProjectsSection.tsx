@@ -15,10 +15,10 @@ export default function ProjectsSection() {
   return (
     <section className="projects-section page-section" id="projects" aria-labelledby="projects-title">
       <div className="page-container section-layout">
-        <SectionHeading number="03" eyebrow="SELECTED WORK" title="Things I’ve built." description="A selection of AI, full-stack, automation, and practical application work, including one platform currently in development." />
+        <SectionHeading number="03" eyebrow="SELECTED WORK" title="Things I’ve built." description="A concise look at the problems I keep returning to: useful AI tools, clear workflows, automation, and software that helps people get something done." />
         <div className="projects-content">
           <div className="projects-heading-row">
-            <p className="projects-context">Projects across AI, chatbot development, automation, Python, and full-stack application building.</p>
+            <p className="projects-context">Some are finished experiments, some are learning projects, and one is still growing. Together they show how I move from curiosity to a working prototype.</p>
           </div>
           <div className="filter-bar" role="group" aria-label="Filter projects by category">
             <span className="filter-label"><Layers3 size={14} /> FILTER</span>

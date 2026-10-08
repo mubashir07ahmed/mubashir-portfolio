@@ -3,13 +3,13 @@ import SectionHeading from '../components/SectionHeading';
 import { skillGroups } from '../../shared/profileData.js';
 
 const icons = { code: Code2, layers: Layers3, server: ServerCog, wrench: Wrench, binary: Binary, sparkles: BrainCircuit };
-const learningStages = ['Core foundations', 'Building interfaces', 'Connecting systems', 'Automating workflows', 'Practicing patterns', 'Exploring applied AI'];
+const learningStages = ['Strengthening foundations', 'Building interfaces', 'Connecting systems', 'Automating workflows', 'Practicing patterns', 'Exploring applied AI'];
 
 export default function SkillsSection() {
   return (
     <section className="skills-section page-section" id="skills" aria-labelledby="skills-title">
       <div className="page-container section-layout">
-        <SectionHeading number="02" eyebrow="THE TOOLKIT" title="Skills in progress." description="A working toolkit built through coursework, practice, experimentation, and making things." />
+        <SectionHeading number="02" eyebrow="THE TOOLKIT" title="Skills in progress." description="A practical toolkit shaped by coursework, experiments, project work, and a habit of learning by doing." />
         <div className="skills-grid">
           {skillGroups.map((group, index) => {
             const Icon = icons[group.icon as keyof typeof icons];

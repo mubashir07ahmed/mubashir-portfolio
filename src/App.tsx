@@ -20,16 +20,6 @@ function validProfileUrl(value: string) {
 
 export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(scrollable > 0 ? Math.min(100, Math.round((window.scrollY / scrollable) * 100)) : 0);
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
   useEffect(() => {
     const revealSelector = [
       '.page-section:not(.hero-section) .section-heading',
@@ -57,9 +47,6 @@ export default function App() {
   return (
     <div className="site-shell">
       <a className="skip-link" href="#main-content">Skip to content</a>
-      <div className="page-progress" aria-hidden="true">
-        <span className="page-progress-bar" style={{ transform: `scaleX(${scrollProgress / 100})` }} />
-      </div>
       <TopNav onChatOpen={() => setChatOpen(true)} />
       <main id="main-content" className="mx-auto w-full">
         <HeroSection onChatOpen={() => setChatOpen(true)} />

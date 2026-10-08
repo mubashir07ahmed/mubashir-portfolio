@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { FormEvent, KeyboardEvent } from 'react';
+import type { FormEvent, KeyboardEvent, ReactNode } from 'react';
 import { ChevronDown, Send, Terminal, User, X } from 'lucide-react';
 import { profileData } from '../../shared/profileData.js';
 import { getLocalAnswer, isProfileQuestion } from '../../shared/chat.js';
@@ -9,6 +9,59 @@ type ChatMessage = { id: number; role: 'assistant' | 'user'; text: string; actio
 type ChatResponse = { text?: string; action?: ChatAction; actions?: ChatAction[]; fallbackUsed?: boolean; scope?: 'profile' | 'general' };
 
 const welcomeMessage: ChatMessage = { id: 0, role: 'assistant', text: profileData.chat.welcome };
+
+function renderInline(text: string): ReactNode[] {
+  return text.split(/(\*\*[^*]+\*\*|__[^_]+__|`[^`]+`|\*[^*]+\*)/g).map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={index}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('__') && part.endsWith('__')) return <strong key={index}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('`') && part.endsWith('`')) return <code key={index}>{part.slice(1, -1)}</code>;
+    if (part.startsWith('*') && part.endsWith('*')) return <em key={index}>{part.slice(1, -1)}</em>;
+    return part;
+  });
+}
+
+function AssistantMessageText({ text }: { text: string }) {
+  const lines = text.split(/\r?\n/);
+  const blocks: Array<{ type: 'paragraph' | 'heading' | 'ul' | 'ol'; lines: string[] }> = [];
+  let paragraph: string[] = [];
+  const flushParagraph = () => {
+    if (paragraph.length) { blocks.push({ type: 'paragraph', lines: [paragraph.join(' ')] }); paragraph = []; }
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) { flushParagraph(); continue; }
+    const heading = trimmed.match(/^#{1,4}\s+(.+)$/);
+    if (heading) { flushParagraph(); blocks.push({ type: 'heading', lines: [heading[1]] }); continue; }
+    const bullet = trimmed.match(/^[-*•]\s+(.+)$/);
+    if (bullet) {
+      flushParagraph();
+      const last = blocks.at(-1);
+      if (last?.type === 'ul') last.lines.push(bullet[1]);
+      else blocks.push({ type: 'ul', lines: [bullet[1]] });
+      continue;
+    }
+    const ordered = trimmed.match(/^\d+[.)]\s+(.+)$/);
+    if (ordered) {
+      flushParagraph();
+      const last = blocks.at(-1);
+      if (last?.type === 'ol') last.lines.push(ordered[1]);
+      else blocks.push({ type: 'ol', lines: [ordered[1]] });
+      continue;
+    }
+    paragraph.push(trimmed);
+  }
+  flushParagraph();
+
+  return <div className="chat-rich-text">
+    {blocks.map((block, index) => {
+      if (block.type === 'heading') return <h4 key={index}>{renderInline(block.lines[0])}</h4>;
+      if (block.type === 'ul') return <ul key={index}>{block.lines.map((item, itemIndex) => <li key={itemIndex}>{renderInline(item)}</li>)}</ul>;
+      if (block.type === 'ol') return <ol key={index}>{block.lines.map((item, itemIndex) => <li key={itemIndex}>{renderInline(item)}</li>)}</ol>;
+      return <p key={index}>{renderInline(block.lines[0])}</p>;
+    })}
+  </div>;
+}
 
 export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
@@ -137,7 +190,7 @@ export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOp
               <div className={`chat-message chat-message--${message.role}`} key={message.id}>
                 {message.role === 'assistant' && <span className="chat-message-avatar" aria-hidden="true"><Terminal size={14} /></span>}
                 <div className="chat-bubble">
-                  <p>{message.text}</p>
+                  {message.role === 'assistant' ? <AssistantMessageText text={message.text} /> : <p>{message.text}</p>}
                   {(message.actions ?? (message.action ? [message.action] : [])).map((action) => <a className="chat-action-link" href={action.href} target={action.label.startsWith('View') ? '_blank' : undefined} rel={action.label.startsWith('View') ? 'noreferrer' : undefined} download={action.label.startsWith('Download') ? true : undefined} key={`${message.id}-${action.label}`}>{action.label} <span aria-hidden="true">↗</span></a>)}
                 </div>
                 {message.role === 'user' && <span className="chat-message-avatar chat-message-avatar--user" aria-hidden="true"><User size={14} /></span>}

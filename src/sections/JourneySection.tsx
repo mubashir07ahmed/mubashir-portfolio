@@ -8,7 +8,7 @@ export default function JourneySection() {
       <div className="page-container section-layout journey-layout">
         <SectionHeading number="04" eyebrow="EXPERIENCE & LEARNING" title="My learning journey." description="A snapshot of what I’m studying, practicing, building, and exploring right now." />
         <div className="journey-content">
-          <div className="journey-callout glass-card"><span className="journey-callout-icon"><img src="/logos/vnr-vjiet.png" alt="VNR VJIET logo" /></span><div><p className="eyebrow">CURRENT CHAPTER</p><h3>B.Tech in Internet of Things (IoT)</h3><p>Studying at VNR Vignana Jyothi Institute of Engineering and Technology, expected graduation 2029.</p></div><span className="current-tag"><i /> Current</span></div>
+          <div className="journey-callout glass-card"><span className="journey-callout-icon"><img src="/logos/vnr-vjiet.png" alt="VNR VJIET logo" /></span><div><p className="eyebrow">CURRENT CHAPTER</p><h3>B.Tech in Internet of Things (IoT) · 2nd Year</h3><p>Currently pursuing the second year at VNR Vignana Jyothi Institute of Engineering and Technology (VNR VJIET), expected graduation 2029.</p></div><span className="current-tag"><i /> Current</span></div>
           <ol className="journey-timeline">
             {learningJourney.slice(1).map((item, index) => <li className="journey-item" key={item.title}>
               <span className="journey-point" aria-hidden="true">{index === 3 ? <Sparkles size={14} /> : <CircleDot size={14} />}</span>

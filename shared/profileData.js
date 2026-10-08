@@ -1,10 +1,10 @@
 // Single editable source of truth for Mubashir Ahmed's verified profile facts.
 export const profileData = {
   name: 'Mubashir Ahmed',
-  role: 'B.Tech Internet of Things (IoT) Student',
-  headline: 'B.Tech IoT student building intelligent and practical digital solutions.',
+  role: 'B.Tech Internet of Things (IoT) Student · 2nd Year',
+  headline: '2nd-year B.Tech IoT student building intelligent and practical digital solutions.',
   intro: 'I’m passionate about Artificial Intelligence, Machine Learning, full-stack development, software engineering, IoT, and problem solving. I enjoy turning ideas into useful applications and continuously learning how technology works behind the scenes.',
-  education: 'B.Tech in Internet of Things (IoT) — Expected 2029',
+  education: 'B.Tech in Internet of Things (IoT) — 2nd Year · Expected 2029',
   institution: 'VNR Vignana Jyothi Institute of Engineering and Technology (VNR VJIET)',
   location: 'Hyderabad, Telangana, India',
   interests: [
@@ -102,7 +102,7 @@ export const projectPlaceholders = [
 ];
 
 export const learningJourney = [
-  { title: 'B.Tech in Internet of Things (IoT)', detail: 'VNR VJIET · Expected graduation 2029', kind: 'education' },
+  { title: 'B.Tech in Internet of Things (IoT)', detail: 'VNR VJIET · 2nd year · Expected graduation 2029', kind: 'education' },
   { title: 'Building AI-powered applications', detail: 'Developing chatbots, question solvers, answer generators, and practical automation tools.', kind: 'building' },
   { title: 'Exploring full-stack development', detail: 'Working across frontend, backend, APIs, databases, and browser-side automation.', kind: 'learning' },
   { title: 'Growing through competitions', detail: 'Prompt Craft winner and SynthVision Hackathon finalist at VNR VJIET.', kind: 'growth' },

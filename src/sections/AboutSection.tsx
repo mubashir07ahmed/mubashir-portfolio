@@ -15,7 +15,7 @@ export default function AboutSection() {
         <SectionHeading number="01" eyebrow="A LITTLE ABOUT ME" title="Curiosity, made practical." description="I’m drawn to the ideas behind the interface—and to the process of turning those ideas into something useful." />
         <div className="about-content">
           <div className="about-copy">
-            <p className="lead-copy">I’m <strong>Mubashir Ahmed</strong>, a B.Tech Internet of Things (IoT) student at VNR VJIET with a strong interest in Artificial Intelligence, Machine Learning, software development, and problem solving.</p>
+            <p className="lead-copy">I’m <strong>Mubashir Ahmed</strong>, currently pursuing my 2nd year of B.Tech in Internet of Things (IoT) at VNR VJIET, with a strong interest in Artificial Intelligence, Machine Learning, software development, and problem solving.</p>
             <p>I enjoy building practical applications that bring AI together with full-stack development, chatbot systems, APIs, and automation. I’m especially interested in understanding how technologies work behind the scenes, then turning a promising idea into a working project.</p>
             <p>I work with C, Java, Python, HTML, CSS, JavaScript, AI APIs, chatbot development, full-stack development, and MySQL. Alongside building, I actively practice data structures, algorithms, problem solving, and object-oriented programming.</p>
             <p>My goal is to grow as an AI/ML, full-stack, and IoT developer while building meaningful applications that solve real-world problems.</p>

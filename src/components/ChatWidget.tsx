@@ -161,7 +161,7 @@ export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOp
             </div>
           </div>}
 
-          {loading && <div className="chat-message chat-message--assistant"><span className="chat-message-avatar" aria-hidden="true"><Terminal size={14} /></span><div className="chat-bubble chat-typing" role="status" aria-label="Assistant is thinking"><span className="chat-fluid-loader" aria-hidden="true"><i /><i /><i /></span></div></div>}
+          {loading && <div className="chat-message chat-message--assistant"><span className="chat-message-avatar" aria-hidden="true"><Terminal size={14} /></span><div className="chat-bubble chat-typing" role="status" aria-label="Assistant is thinking"><span className="chat-fluid-loader" aria-hidden="true"><i /><i /><i /></span><span className="chat-thinking-text">thinking…</span></div></div>}
         </div>
 
         {localMode && <div className="chat-mode-note">AI offline · local reply used.</div>}

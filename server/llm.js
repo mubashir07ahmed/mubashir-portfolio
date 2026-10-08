@@ -93,3 +93,11 @@ export async function invokeLLM({ messages, maxTokens = 320 }) {
   }
   throw lastError || new Error('All configured AI providers are unavailable.');
 }
+
+export function hasConfiguredProvider() {
+  try {
+    return configuredProviders().length > 0;
+  } catch {
+    return false;
+  }
+}

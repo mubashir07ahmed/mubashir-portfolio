@@ -6,6 +6,13 @@ const lower = (rawMessage) => String(rawMessage ?? '').trim().toLowerCase();
 const includesAny = (question, terms) => terms.some((term) => question.includes(term));
 const validLinks = Object.entries(profileData.codingProfiles)
   .filter(([, url]) => typeof url === 'string' && url.startsWith('https://'));
+const knownPageTerms = [
+  ...projectPlaceholders.map((item) => item.title),
+  ...skillGroups.map((item) => item.title),
+  ...learningJourney.map((item) => item.title),
+  ...profileData.achievements.flatMap((item) => [item.title, item.organization]),
+  profileData.institution,
+].map((term) => term.toLowerCase()).filter((term) => term.length > 3);
 
 export function isProfileQuestion(rawMessage) {
   const question = lower(rawMessage);
@@ -15,9 +22,9 @@ export function isProfileQuestion(rawMessage) {
     'portfolio', 'on this page', 'on the website', 'this website', 'site section', 'navigation',
     'about section', 'skills section', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests',
     'github', 'linkedin', 'leetcode', 'hackerrank', 'codechef', 'vnr', 'vjiet',
-    'prompt craft', 'synthvision', 'question solver', 'answer generator', 'lost and found',
+    'prompt craft', 'synthvision', 'krithomedh', 'question solver', 'answer generator', 'lost and found',
     'to-do app', 'full-stack chatbot',
-  ]);
+  ]) || knownPageTerms.some((term) => question.includes(term));
   return namesMubashir
     || pageContext
     || /\b(?:what are you|who are you|what is your name|what can you do|how can you help|what do you do|are you (?:an? )?(?:ai|chatbot)|tell me about yourself)\b/.test(question)
@@ -78,11 +85,23 @@ export function getProfileAnswer(rawMessage) {
     return { text: profileText(`The portfolio lists these active profile links: ${links}.`) };
   }
 
+  if (/synthvision/.test(question)) {
+    return { text: profileText('SynthVision was an AI/ML and IoT hackathon at VNR VJIET where Mubashir was a finalist.') };
+  }
+
+  if (/krithomedh/.test(question)) {
+    return { text: profileText('Krithomedh is the AI/ML and IoT Club at VNR VJIET associated with the SynthVision Hackathon, where Mubashir was a finalist.') };
+  }
+
+  if (/prompt craft/.test(question)) {
+    return { text: profileText('Prompt Craft was an ISTE student chapter event at VNR VJIET where Mubashir was a winner.') };
+  }
+
   if (/achievement|award|winner|finalist|prompt craft|synthvision/.test(question)) {
     return { text: profileText(profileData.achievements.map((item) => `${item.title} at ${item.organization}. ${item.detail}`).join(' ')) };
   }
 
-  if (/project|portfolio work|built|worked on|application|app|solver|generator|lost and found|to-do/.test(question)) {
+  if (/project|portfolio work|built|worked on|application|app|solver|generator|lost and found|to-do/.test(question) || projectPlaceholders.some((item) => question.includes(item.title.toLowerCase()))) {
     return { text: projectAnswer(question) };
   }
 

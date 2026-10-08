@@ -47,4 +47,8 @@ test('the chatbot can explain detailed page content', () => {
   assert.match(getLocalAnswer('What coding interests are shown?').text, /Artificial Intelligence.*Machine Learning/i);
   assert.match(getLocalAnswer('What sections are on this website?').text, /Home, About, Skills, Projects/i);
   assert.match(getLocalAnswer('Where is Mubashir based?').text, /Hyderabad, Telangana, India/i);
+  assert.match(getLocalAnswer("What's SynthVision?").text, /hackathon.*finalist/i);
+  assert.match(getLocalAnswer("What's Krithomedh?").text, /AI\/ML and IoT Club/i);
+  assert.match(getLocalAnswer("What's the AI Full-Stack Chatbot?").text, /API integration/i);
+  assert.match(getLocalAnswer("What's Prompt Craft?").text, /Winner/i);
 });

@@ -700,7 +700,10 @@ body { color: var(--text); background: radial-gradient(circle at 82% 8%, rgba(15
 .site-header { border-bottom-color: rgba(238, 233, 223, .14); background: rgba(10, 11, 13, .9); box-shadow: 0 8px 28px rgba(0, 0, 0, .22); }
 .brand-copy strong { color: #eee9df; }
 .brand-copy small, .primary-nav > a { color: #929690; }
+.primary-nav { z-index: 2; background: #101614; border-bottom-color: #2e4238; box-shadow: 0 15px 24px rgba(0, 0, 0, .34); }
+.primary-nav > a { color: #c9d2cc; }
 .primary-nav > a:hover, .primary-nav > a:focus-visible { color: #c9dfab; }
+.mobile-menu-toggle { color: #ddd8ce; border-color: #464a47; background: #15181a; }
 .primary-nav > a::after { background: #9fc77d; }
 .brand-mark { border-color: #587447; background: linear-gradient(145deg, #526f3f, #2e4d32); box-shadow: 0 7px 16px rgba(93, 133, 71, .24); }
 .brand-mark i { border-color: #0a0b0d; background: #d1a362; }

@@ -1,37 +1,47 @@
 const requestTimeoutMs = 12_000;
 
 function configuredProviders() {
+  const selectedProvider = process.env.AI_PROVIDER?.trim().toLowerCase() || 'auto';
   const groqKey = process.env.GROQ_API_KEY?.trim();
   const openAiKey = process.env.OPENAI_API_KEY?.trim();
   const geminiKey = process.env.GEMINI_API_KEY?.trim();
   const manusApiUrl = process.env.MANUS_API_URL?.trim();
   const manusKey = process.env.MANUS_API_KEY?.trim();
 
-  return [
+  const providers = [
     groqKey && {
+      id: 'groq',
       name: 'Groq',
       apiKey: groqKey,
       endpoint: 'https://api.groq.com/openai/v1/chat/completions',
       model: process.env.GROQ_MODEL?.trim() || 'openai/gpt-oss-20b',
     },
     openAiKey && {
+      id: 'openai',
       name: 'OpenAI',
       apiKey: openAiKey,
       endpoint: 'https://api.openai.com/v1/chat/completions',
       model: process.env.OPENAI_MODEL?.trim() || 'gpt-4o-mini',
     },
     geminiKey && {
+      id: 'gemini',
       name: 'Gemini',
       apiKey: geminiKey,
       endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
       model: process.env.GEMINI_MODEL?.trim() || 'gemini-2.0-flash',
     },
     manusApiUrl && manusKey && {
+      id: 'manus',
       name: 'Manus',
       apiKey: manusKey,
       endpoint: `${manusApiUrl.replace(/\/+$/, '')}/v1/chat/completions`,
     },
   ].filter(Boolean);
+
+  if (selectedProvider === 'auto') return providers;
+  const selected = providers.find((provider) => provider.id === selectedProvider);
+  if (!selected) throw new Error(`AI_PROVIDER=${selectedProvider} is not configured or is unavailable.`);
+  return [selected];
 }
 
 async function requestProvider(provider, messages, maxTokens) {
@@ -65,8 +75,8 @@ async function requestProvider(provider, messages, maxTokens) {
 
 /**
  * Server-only OpenAI-compatible chat-completions wrapper.
- * Groq is preferred because it is the easiest low-cost option for this project.
- * OpenAI, Gemini, and the managed Manus provider are secure fallbacks when configured.
+ * Set AI_PROVIDER to groq, openai, gemini, manus, or auto.
+ * auto uses Groq, OpenAI, Gemini, then the managed Manus provider when configured.
  */
 export async function invokeLLM({ messages, maxTokens = 320 }) {
   if (!Array.isArray(messages) || messages.length === 0) throw new Error('LLM messages are required.');

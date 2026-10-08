@@ -76,11 +76,7 @@ export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOp
     }
 
     const scope = response.scope ?? 'general';
-    const proposedText = response.text ?? profileData.chat.unknown;
-    const repeated = messages.some((message) => message.role === 'assistant' && message.text === proposedText);
-    const assistantText = repeated
-      ? 'I’ve already shared that detail above. Ask about another part of Mubashir’s education, skills, projects, achievements, coding, contact details, or resume.'
-      : proposedText;
+    const assistantText = response.text ?? profileData.chat.unknown;
     setMessages((current) => [
       ...current.map((message) => message.id === userMessageId ? { ...message, scope } : message),
       {

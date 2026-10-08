@@ -5,6 +5,8 @@ const profileText = (text) => `${text} ${profileData.chat.profileNote}`;
 const lower = (rawMessage) => String(rawMessage ?? '').trim().toLowerCase();
 const includesAny = (question, terms) => terms.some((term) => question.includes(term));
 const assistantRoleTerms = ['what are you', 'who are you', 'what is your name', 'what is your role', 'what is this chatbot', 'what is your purpose', 'what can you do', 'how can you help', 'what do you do', 'why are you here', 'are you an ai', 'are you a chatbot', 'tell me about yourself'];
+const greetingPattern = /^(?:h+i+|h+e+y+|h+e+l+o+|hiya|good morning|good afternoon|good evening|how are you|how's it going|how is it going|what's up|thanks|thank you)(?:[!?,.\s].*)?$/;
+const testPattern = /^(?:test|testing|tst|just testing|check|checking)(?:[!?,.\s].*)?$/;
 const validLinks = Object.entries(profileData.codingProfiles)
   .filter(([, url]) => typeof url === 'string' && url.startsWith('https://'));
 const knownPageTerms = [
@@ -18,6 +20,7 @@ const knownPageTerms = [
 export function isProfileQuestion(rawMessage) {
   const question = lower(rawMessage);
   if (!question) return true;
+  if (greetingPattern.test(question) || testPattern.test(question)) return true;
   const namesMubashir = /\b(?:mohammed|mubashir|ahmed)\b/.test(question);
   const pageContext = includesAny(question, [
     'portfolio', 'on this page', 'on the website', 'this website', 'site section', 'navigation',
@@ -29,7 +32,7 @@ export function isProfileQuestion(rawMessage) {
   return namesMubashir
     || pageContext
     || includesAny(question, assistantRoleTerms)
-    || /\b(?:my|your|his|her)\s+(?:profile|resume|cv|skills?|projects?|work|background|interests?|hobbies|education|career|goals?|experience|contact details?|achievements?|links?)\b/.test(question)
+    || /\b(?:my|your|his|her)\s+(?:profile|resume|cv|skills?|projects?|work|background|interests?|intrests?|hobbies|education|career|goals?|experience|contact details?|achievements?|links?)\b/.test(question)
     || /\b(?:who is|tell me about)\s+(?:him|he|mubashir|ahmed|the developer)\b/.test(question)
     || /\b(?:view|download|open|see)\s+(?:the\s+)?(?:resume|cv)\b/.test(question);
 }
@@ -54,6 +57,15 @@ function skillsAnswer(question) {
 export function getProfileAnswer(rawMessage) {
   const question = lower(rawMessage);
   if (!question) return unknown();
+
+  if (greetingPattern.test(question)) {
+    if (/^(?:thanks|thank you)/.test(question)) return { text: 'You’re welcome! Ask me anything about Mubashir’s portfolio, projects, skills, education, or resume.' };
+    return { text: 'Hello! I’m Mubashir’s portfolio assistant. Ask me about his projects, skills, education, achievements, or resume.' };
+  }
+
+  if (testPattern.test(question)) {
+    return { text: 'I’m working. Try asking about Mubashir’s projects, skills, education, achievements, or resume.' };
+  }
 
   if (includesAny(question, assistantRoleTerms)) {
     return { text: profileText('I’m the AI Chatbot on Mubashir Ahmed’s portfolio. I can help visitors, recruiters, and companies explore all of the information presented on this page, including his education, skills, projects, learning journey, achievements, coding profiles, contact details, and resume.') };
@@ -126,7 +138,7 @@ export function getProfileAnswer(rawMessage) {
     return { text: profileText(`The coding interests shown on the page include ${codingInterests.join(', ')}.`) };
   }
 
-  if (/interest|focus|passion|area/.test(question)) {
+  if (/interest|intrest|focus|passion|area/.test(question)) {
     return { text: profileText(`His main interests include ${profileData.interests.join(', ')}.`) };
   }
 

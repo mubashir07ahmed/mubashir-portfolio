@@ -2,6 +2,20 @@
 
 A responsive dark editorial-style personal portfolio built with React, TypeScript, Tailwind CSS, Vite, Express, and Lucide React. Its typography and controls are sized for comfortable Mac readability, and its assistant can answer general questions as well as concise questions about Mubashir’s portfolio. Personal details stay grounded in editable profile facts; general questions use the server-side Groq LLM when `GROQ_API_KEY` is configured.
 
+## Live website and source code
+
+### **Visit the live portfolio: [mubashirr.in](https://mubashirr.in)**
+
+The finished website is available at **[https://mubashirr.in](https://mubashirr.in)**. Open it to view Mubashir’s portfolio, projects, resume, coding profiles, contact section, and AI chatbot.
+
+To inspect, download, or edit the website source code, use the **[GitHub repository](https://github.com/mubashir07ahmed/mubashir-portfolio)**. The live website and the source repository serve different purposes:
+
+| Need | Link |
+| --- | --- |
+| View the finished website | [mubashirr.in](https://mubashirr.in) |
+| Browse or download the source code | [GitHub repository](https://github.com/mubashir07ahmed/mubashir-portfolio) |
+| Run the project locally | Follow the setup below |
+
 ## Run locally
 
 Requirements: Node.js 22 or newer and pnpm 11.25.0 (pinned in `package.json`).

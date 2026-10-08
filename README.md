@@ -46,12 +46,14 @@ The site includes:
 
 The chatbot is intentionally focused on Mubashir’s portfolio rather than acting as a general-purpose assistant:
 
-1. **Portfolio knowledge always works locally.** Questions about education, skills, projects, achievements, resume, contact details, coding profiles, and the ideas behind the website use the shared portfolio data and do not require an API key.
-2. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that this assistant is limited to the portfolio.
+1. **Portfolio knowledge always works locally.** Questions about education, skills, projects, achievements, resume, contact details, coding profiles, and the ideas behind the website use verified shared portfolio data and do not require an API key.
+2. **Semantic search works offline.** If no API provider is configured, the assistant first tries deterministic local answers and then uses a local `all-MiniLM-L6-v2` embedding index to understand paraphrased questions and retrieve the closest verified personal knowledge document.
+3. **The vector store covers the full profile.** It includes identity, headline, introduction, education, college, location, interests, learning style, career direction, languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website content, and assistant behavior.
+4. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that this assistant is limited to the portfolio.
 
 ### Optional provider infrastructure
 
-The repository still includes secure provider wrappers for Groq, OpenAI, Gemini, and the managed Manus provider in `server/llm.js` so the project can add controlled AI-powered portfolio features later. The current portfolio-only route does not send unrelated visitor questions to any provider.
+The repository includes secure provider wrappers for Groq, OpenAI, Gemini, and the managed Manus provider in `server/llm.js`. When a provider is configured, it can answer portfolio questions using the verified context; when no provider is available, local semantic search takes over automatically.
 
 Groq remains the recommended provider for a future controlled expansion because it is fast and offers a free developer option subject to its current account limits and model availability.
 
@@ -61,9 +63,9 @@ The provider priority is:
 2. OpenAI
 3. Gemini
 4. Manus managed provider
-5. Local deterministic portfolio answers
+5. Local deterministic answers and semantic search
 
-Without any API key, the website works normally for every supported portfolio question. No provider key is needed to explain Mubashir’s page content.
+Without any API key, the website still works for supported portfolio questions and paraphrases. The production container builds the semantic index automatically.
 
 ### Environment variables
 
@@ -117,45 +119,6 @@ pnpm build
 pnpm start
 ```
 
-## How to implement or extend the website
-
-The project is intentionally organized so that the main portfolio facts are easy to update.
-
-### Update personal information
-
-Edit [`shared/profileData.js`](shared/profileData.js). This file controls the name, education, interests, skills, projects, achievements, profile links, resume path, and chatbot suggestions.
-
-### Add or update a project
-
-Add a project object to `projectPlaceholders` in [`shared/profileData.js`](shared/profileData.js). Include:
-
-- `title`
-- `description`
-- `categories`
-- `technologies`
-- Optional GitHub or live-demo URLs
-- Optional project image and alt text
-
-The Projects section and chatbot use this shared data.
-
-### Customize the developer terminal
-
-The terminal lives in [`src/components/TerminalPanel.tsx`](src/components/TerminalPanel.tsx). Its commands and outputs are generated from `shared/profileData.js`, so the visible profile stays aligned with the rest of the website.
-
-Its styling lives in [`src/theme.css`](src/theme.css). To change terminal colors, spacing, sizing, motion speed, or responsive behavior, edit the `.terminal-*` rules. The panel also respects `prefers-reduced-motion`.
-
-### Customize the hero
-
-The terminal is positioned in the right column of [`src/sections/HeroSection.tsx`](src/sections/HeroSection.tsx), beside the main introduction and calls to action. The left side keeps the personal headline, education status, resume link, projects link, and chatbot action.
-
-### Customize AI providers
-
-The provider selection is implemented in [`server/llm.js`](server/llm.js). It checks configured server secrets in priority order and tries the next provider if an earlier provider fails. The API route is in [`server/index.js`](server/index.js).
-
-### Customize the chatbot’s local answers
-
-Edit [`shared/chat.js`](shared/chat.js). It recognizes terms from the shared profile data, answers portfolio questions locally, and keeps unsupported personal facts grounded instead of inventing them.
-
 ## Project structure
 
 ```text
@@ -198,18 +161,3 @@ The tests cover profile grounding, detailed project answers, skill categories, l
 - **GitHub profile:** [@mubashir07ahmed](https://github.com/mubashir07ahmed)
 - **LinkedIn:** [Mubashir Ahmed](https://www.linkedin.com/in/mubashir-ahmed-604145339/)
 - **Email:** [mubashir07ahmed@gmail.com](mailto:mubashir07ahmed@gmail.com)
-
-
-## Offline semantic fallback
-
-If no API provider is configured, the portfolio still answers personal and portfolio questions locally. It first checks the deterministic profile answers, then uses a local `all-MiniLM-L6-v2` embedding index to semantically search verified knowledge documents about Mubashir.
-
-The local index covers his identity, headline, introduction, education, college, location, interests, learning style, career direction, programming languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website, and assistant behavior. This means paraphrased questions can still work without Groq, OpenAI, Gemini, or another API key.
-
-To regenerate the local vector store after updating `shared/profileData.js` or `server/semanticKnowledge.js`:
-
-```bash
-pnpm semantic:index
-```
-
-The production container builds this semantic index automatically. If semantic confidence is low, the assistant returns the portfolio-only fallback rather than inventing personal information.

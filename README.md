@@ -1,62 +1,198 @@
 # Mubashir Ahmed — Portfolio
 
-A responsive dark editorial-style personal portfolio built with React, TypeScript, Tailwind CSS, Vite, Express, and Lucide React. Its typography and controls are sized for comfortable Mac readability, and its assistant can answer general questions as well as concise questions about Mubashir’s portfolio. Personal details stay grounded in editable profile facts; general questions use the server-side Groq LLM when `GROQ_API_KEY` is configured.
+## **Visit the live website: [mubashirr.in](https://mubashirr.in)**
 
-## Live website and source code
+Hello, I’m **Mubashir Ahmed**. I’m currently pursuing my **2nd year of B.Tech in Internet of Things (IoT) at VNR VJIET**, Hyderabad. I enjoy taking an idea, understanding how it works behind the scenes, and turning it into a useful software or IoT experience.
 
-### **Visit the live portfolio: [mubashirr.in](https://mubashirr.in)**
+This repository contains the source code for my personal portfolio: [github.com/mubashir07ahmed/mubashir-portfolio](https://github.com/mubashir07ahmed/mubashir-portfolio). The finished website is live at [**mubashirr.in**](https://mubashirr.in).
 
-The finished website is available at **[https://mubashirr.in](https://mubashirr.in)**. Open it to view Mubashir’s portfolio, projects, resume, coding profiles, contact section, and AI chatbot.
+> If you are reading this as a recruiter, collaborator, or fellow developer, the quickest path is: visit the live site first, then open the source repository to see how the interface, chatbot, data model, and server fit together.
 
-To inspect, download, or edit the website source code, use the **[GitHub repository](https://github.com/mubashir07ahmed/mubashir-portfolio)**. The live website and the source repository serve different purposes:
+## A little about me
 
-| Need | Link |
-| --- | --- |
-| View the finished website | [mubashirr.in](https://mubashirr.in) |
-| Browse or download the source code | [GitHub repository](https://github.com/mubashir07ahmed/mubashir-portfolio) |
-| Run the project locally | Follow the setup below |
+I am interested in **Artificial Intelligence, Machine Learning, full-stack development, chatbot development, software engineering, IoT, automation, and problem solving**. I am still learning, so this portfolio intentionally describes my work honestly rather than assigning inflated proficiency ratings.
 
-## Run locally
+My current goal is to grow into an **AI/ML, full-stack, and IoT developer** while building practical applications that solve real problems.
 
-Requirements: Node.js 22 or newer and pnpm 11.25.0 (pinned in `package.json`).
+## What I have built
+
+The portfolio currently presents these projects:
+
+- **AI Full-Stack Chatbot** — an AI-powered chatbot built through the AI Full Stack Course at VNR VJIET, covering frontend, backend, API integration, and chatbot functionality.
+- **Local AI Question Solver** — a local system that extracts questions from webpages and generates and inserts answers through a backend API and browser automation.
+- **AI Answer Generator** — a tool that accepts question PDFs, generates structured answers, and creates clean answer PDFs for study material.
+- **Python To-Do App** — a practical task-management application for adding, viewing, updating, and managing daily tasks.
+- **Campus Lost & Found Match Desk** — a full-stack platform in development for students to report, search, and match lost and found items.
+
+I have also participated in **Prompt Craft**, where I was a winner, and the **SynthVision Hackathon**, where I was a finalist through the Krithomedh AI/ML & IoT Club at VNR VJIET.
+
+## What the website feels like
+
+The site uses a **dark editorial interface** with terminal-inspired details, warm off-white text, olive-green actions, amber highlights, and a calm, readable rhythm. The hero section includes a custom abstract developer avatar made specifically for this portfolio. It uses a lightweight canvas constellation, orbit rings, parallax movement, and a small AI identity card rather than copying another developer’s artwork.
+
+The site includes:
+
+- About section and personal background
+- Learning domains and skills
+- Project filtering and project details
+- Learning journey and achievements
+- Coding interests and public profiles
+- Resume view and download actions
+- Contact form and social links
+- AI chatbot with portfolio knowledge
+- Responsive navigation with reduced-motion support
+
+## AI chatbot: Groq, OpenAI, Gemini, and fallback mode
+
+The chatbot is designed to work in two layers:
+
+1. **Portfolio knowledge always works locally.** Questions about my education, skills, projects, achievements, resume, contact details, and coding profiles use the shared portfolio data and do not require an API key.
+2. **Open-ended conversational answers use a server-side provider.** The server supports Groq, OpenAI, Gemini, and the managed Manus provider.
+
+### Recommended provider: Groq
+
+Groq is the recommended starting point because it is fast and offers a free developer option subject to its current account limits and model availability. It works very well for this portfolio’s short conversational responses.
+
+The provider priority is:
+
+1. Groq
+2. OpenAI
+3. Gemini
+4. Manus managed provider
+5. Local deterministic fallback when no provider is available
+
+Without any API key, the website still works normally for portfolio questions and supported simple questions. Only fully open-ended AI conversation falls back to a short local response.
+
+### Environment variables
+
+Set keys only on the server or hosting provider. Never put them in React code, `VITE_*` variables, GitHub, or public files.
+
+| Variable | Purpose | Default model |
+| --- | --- | --- |
+| `GROQ_API_KEY` | Recommended low-cost/free-tier provider | `openai/gpt-oss-20b` |
+| `GROQ_MODEL` | Optional Groq model override | `openai/gpt-oss-20b` |
+| `OPENAI_API_KEY` | OpenAI fallback/provider option | `gpt-4o-mini` |
+| `OPENAI_MODEL` | Optional OpenAI model override | `gpt-4o-mini` |
+| `GEMINI_API_KEY` | Gemini fallback/provider option | `gemini-2.0-flash` |
+| `GEMINI_MODEL` | Optional Gemini model override | `gemini-2.0-flash` |
+
+For local development, set the recommended key in the server environment:
+
+```bash
+export GROQ_API_KEY="your_groq_key_here"
+pnpm install
+pnpm dev
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:GROQ_API_KEY="your_groq_key_here"
+pnpm dev
+```
+
+The browser only calls `/api/chat`; the provider key remains inside `server/llm.js` on the server.
+
+## Run the project locally
+
+Requirements:
+
+- Node.js 22 or newer
+- pnpm 11.25.0 or newer
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3000`. The Express app serves Vite in middleware mode for development, so the chat endpoint and frontend share one origin. For general AI answers locally, set the key only in the server environment, for example `export GROQ_API_KEY=your_key_here` before `pnpm dev`. To create a production bundle, run `pnpm build`; run it with `pnpm start` after the build.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Checks
+For a production build:
 
-Run `pnpm test` to verify that explicit Mubashir-profile questions stay profile-grounded and general questions remain available. Run `pnpm build` for the TypeScript check and production bundle.
+```bash
+pnpm test
+pnpm build
+pnpm start
+```
 
-## Update portfolio details
+## How to implement or extend the website
 
-Edit `shared/profileData.js` to update the name, profile copy, education, skills, project cards, achievements, coding interests, social URLs, contact email, chatbot welcome/suggestions, and resume path. The same profile file is used by the site and the server-side assistant. Project cards currently contain the supplied Mubashir Ahmed project work; add repository links, demos, and further factual technical details when available. Cards support project images with project-specific alt text; only safe HTTP(S) URLs and local root-relative preview paths are accepted.
+The project is intentionally organized so that the main portfolio facts are easy to update.
 
-Set real `codingProfiles`, GitHub, and LinkedIn URLs in that file. A one-page resume is included at `public/resume/Mubashir-Ahmed-Resume.pdf` and linked from the page. It uses the supplied education, contact, skills, projects, achievements, and interests. Its editable Typst source and the pinned build plan live in `resume-source/`.
+### Update personal information
 
-The first-page hero pairs the profile copy with a static, read-only developer terminal populated from `shared/profileData.js`. It does not simulate a live shell, and the earlier abstract hero art is no longer shown. The theme uses a near-black editorial base, warm off-white text, muted olive-green actions, and amber highlights across solid, readable surfaces.
+Edit [`shared/profileData.js`](shared/profileData.js). This file controls the name, education, interests, skills, projects, achievements, profile links, resume path, and chatbot suggestions.
 
-## Chatbot and contact form
+### Add or update a project
 
-The assistant is restricted to Mubashir’s profile, simple greetings, and basic arithmetic. Complex outside-profile questions receive a short scope reminder rather than an AI-generated answer. Profile answers are brief and include a reminder that they are specific to his profile. Repeated answers in one conversation are replaced with a prompt for another profile area. Resume questions offer a scroll-to-resume action plus View PDF and Download PDF actions.
+Add a project object to `projectPlaceholders` in [`shared/profileData.js`](shared/profileData.js). Include:
 
-For questions that identify Mubashir or request the resume, the assistant uses only `shared/profileData.js`. It does not invent employment history, coding ratings, or unsupported personal details. If a personal detail has not been provided, it replies exactly: “That information has not been added to Mubashir’s portfolio yet.” `shared/chat.js` contains the profile-answer rules and simple-question handling. The `/api/chat` endpoint bounds message size and request rate. The app does not persist chat history.
+- `title`
+- `description`
+- `categories`
+- `technologies`
+- Optional GitHub or live-demo URLs
+- Optional project image and alt text
 
-The contact form validates required name, email, and message fields. With Mubashir’s configured email, submit opens a prefilled `mailto:` draft for the visitor to review and send; the demo does not store or transmit messages.
+The Projects section and chatbot use this shared data.
+
+### Customize the developer avatar
+
+The custom avatar lives in [`src/components/DeveloperAvatar.tsx`](src/components/DeveloperAvatar.tsx). Its visual language is intentionally original: a glowing MA identity figure, canvas particles, orbit rings, hover tilt, and a button that opens the AI assistant.
+
+Its styling lives in [`src/theme.css`](src/theme.css). To change the avatar’s colors, position, size, or badge copy, edit the `.developer-avatar-*` rules. To move it to another section, import `DeveloperAvatar` into that section and pass the existing `onOpenAssistant` callback.
+
+### Customize the hero
+
+The avatar is currently positioned in the right column of [`src/sections/HeroSection.tsx`](src/sections/HeroSection.tsx), beside the main introduction and calls to action. The left side keeps the personal headline, education status, resume link, projects link, and chatbot action.
+
+### Customize AI providers
+
+The provider selection is implemented in [`server/llm.js`](server/llm.js). It checks configured server secrets in priority order and tries the next provider if an earlier provider fails. The API route is in [`server/index.js`](server/index.js).
+
+### Customize the chatbot’s local answers
+
+Edit [`shared/chat.js`](shared/chat.js). It recognizes terms from the shared profile data, answers portfolio questions locally, and keeps unsupported personal facts grounded instead of inventing them.
 
 ## Project structure
 
-- `src/sections/` — hero, about, skills, projects, learning journey, coding, resume, and contact sections.
-- `src/components/` — navigation, chatbot, section headings, terminal panel, project cards, and social links.
-- `src/index.css` — Tailwind base reset. `src/theme.css` — responsive layout, warm editorial palette, readable type scale, and reduced-motion handling.
-- `shared/profileData.js` — editable facts and explicit placeholders shared across client and server.
-- `shared/chat.js` — personal-profile answer rules and general-topic fallback answers.
-- `server/index.js` — Express API, request limits, dev middleware, and production static server.
-- `server/llm.js` — server-only OpenAI-compatible `invokeLLM` helper that prefers Groq and falls back to the managed platform provider.
-- `public/manus-routes.json` — public route manifest for the single-page site.
-- `app.config.ts` — durable project-logo metadata.
+```text
+src/
+  components/DeveloperAvatar.tsx  # Custom abstract interactive avatar
+  sections/HeroSection.tsx        # Hero layout and avatar placement
+  theme.css                      # Editorial theme and responsive styles
+shared/
+  profileData.js                 # Shared source of truth for portfolio facts
+  chat.js                        # Local chatbot knowledge and safe fallbacks
+server/
+  index.js                       # Express API and chat route
+  llm.js                         # Groq/OpenAI/Gemini/Manus provider wrapper
+public/
+  resume/                        # Resume PDF
+  manus-routes.json              # Website route manifest
+```
 
-The managed deployment stores `GROQ_API_KEY` as a protected server secret. Never put provider keys or tokens in client code, `.env` files committed to the repository, or GitHub. Profile answers continue to work without a provider key; general conversational answers use the deterministic fallback when no server-side AI provider is available.
+## Safety and hosting notes
+
+- Keep all provider keys in hosting-platform secrets or local environment variables.
+- Never commit `.env`, API keys, or `VITE_*` provider keys.
+- Users can call the public `/api/chat` endpoint, but they cannot see the provider key when the server-side setup is used.
+- The endpoint already limits message length and request frequency.
+- If no provider key is configured, the portfolio still works through its local knowledge and deterministic fallback.
+
+## Checks
+
+```bash
+pnpm test
+pnpm build
+```
+
+The tests cover profile grounding, detailed project answers, skill categories, learning journey, page sections, and concise achievement answers.
+
+## Links
+
+- **Live website:** [mubashirr.in](https://mubashirr.in)
+- **Source code:** [GitHub](https://github.com/mubashir07ahmed/mubashir-portfolio)
+- **GitHub profile:** [@mubashir07ahmed](https://github.com/mubashir07ahmed)
+- **LinkedIn:** [Mubashir Ahmed](https://www.linkedin.com/in/mubashir-ahmed-604145339/)
+- **Email:** [mubashir07ahmed@gmail.com](mailto:mubashir07ahmed@gmail.com)

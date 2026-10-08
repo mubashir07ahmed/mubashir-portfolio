@@ -20,6 +20,8 @@ test('outside-profile questions stay restricted while simple questions work', ()
   assert.match(getLocalAnswer('What is a website?').text, /can’t answer general questions/i);
   assert.match(getLocalAnswer('What are you?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
   assert.match(getLocalAnswer('What can you do?').text, /help visitors, recruiters, and companies/i);
+  assert.match(getLocalAnswer('What is your role?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
+  assert.match(getLocalAnswer('What is this chatbot?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
   assert.equal(isProfileQuestion('What are you?'), true);
   assert.equal(isProfileQuestion('Can I view his resume?'), true);
   assert.equal(isRestrictedGeneralQuestion('Can you explain recursion?'), true);

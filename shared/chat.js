@@ -4,6 +4,7 @@ const unknown = () => ({ text: profileData.chat.unknown });
 const profileText = (text) => `${text} ${profileData.chat.profileNote}`;
 const lower = (rawMessage) => String(rawMessage ?? '').trim().toLowerCase();
 const includesAny = (question, terms) => terms.some((term) => question.includes(term));
+const assistantRoleTerms = ['what are you', 'who are you', 'what is your name', 'what is your role', 'what is this chatbot', 'what is your purpose', 'what can you do', 'how can you help', 'what do you do', 'why are you here', 'are you an ai', 'are you a chatbot', 'tell me about yourself'];
 const validLinks = Object.entries(profileData.codingProfiles)
   .filter(([, url]) => typeof url === 'string' && url.startsWith('https://'));
 const knownPageTerms = [
@@ -27,7 +28,7 @@ export function isProfileQuestion(rawMessage) {
   ]) || knownPageTerms.some((term) => question.includes(term));
   return namesMubashir
     || pageContext
-    || /\b(?:what are you|who are you|what is your name|what can you do|how can you help|what do you do|are you (?:an? )?(?:ai|chatbot)|tell me about yourself)\b/.test(question)
+    || includesAny(question, assistantRoleTerms)
     || /\b(?:my|your|his|her)\s+(?:profile|resume|cv|skills?|projects?|work|background|interests?|hobbies|education|career|goals?|experience|contact details?|achievements?|links?)\b/.test(question)
     || /\b(?:who is|tell me about)\s+(?:him|he|mubashir|ahmed|the developer)\b/.test(question)
     || /\b(?:view|download|open|see)\s+(?:the\s+)?(?:resume|cv)\b/.test(question);
@@ -54,7 +55,7 @@ export function getProfileAnswer(rawMessage) {
   const question = lower(rawMessage);
   if (!question) return unknown();
 
-  if (includesAny(question, ['what are you', 'who are you', 'what is your name', 'what can you do', 'how can you help', 'what do you do', 'are you an ai', 'are you a chatbot', 'tell me about yourself'])) {
+  if (includesAny(question, assistantRoleTerms)) {
     return { text: profileText('I’m the AI Chatbot on Mubashir Ahmed’s portfolio. I can help visitors, recruiters, and companies explore all of the information presented on this page, including his education, skills, projects, learning journey, achievements, coding profiles, contact details, and resume.') };
   }
 

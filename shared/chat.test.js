@@ -39,3 +39,12 @@ test('explicit Mubashir questions remain profile-grounded', () => {
     'That information has not been added to Mubashir’s portfolio yet.',
   );
 });
+
+test('the chatbot can explain detailed page content', () => {
+  assert.match(getLocalAnswer('Tell me about the Local AI Question Solver project').text, /extracts questions from webpages/i);
+  assert.match(getLocalAnswer('What is in the programming languages skill group?').text, /C, Java, Python, JavaScript/);
+  assert.match(getLocalAnswer('What is Mubashir learning journey?').text, /Building AI-powered applications/i);
+  assert.match(getLocalAnswer('What coding interests are shown?').text, /Artificial Intelligence.*Machine Learning/i);
+  assert.match(getLocalAnswer('What sections are on this website?').text, /Home, About, Skills, Projects/i);
+  assert.match(getLocalAnswer('Where is Mubashir based?').text, /Hyderabad, Telangana, India/i);
+});

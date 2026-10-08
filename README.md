@@ -28,7 +28,7 @@ I have also participated in **Prompt Craft**, where I was a winner, and the **Sy
 
 ## What the website feels like
 
-The site uses a **dark editorial interface** with terminal-inspired details, warm off-white text, olive-green actions, amber highlights, and a calm, readable rhythm. The hero section includes a custom abstract developer avatar made specifically for this portfolio. It uses a lightweight canvas constellation, orbit rings, parallax movement, and a small AI identity card rather than copying another developer’s artwork.
+The site uses a **dark editorial interface** with terminal-inspired details, warm off-white text, olive-green actions, amber highlights, and a calm, readable rhythm. The hero section includes a responsive developer terminal that reveals verified profile facts from the shared portfolio data with a restrained type-on effect.
 
 The site includes:
 
@@ -136,15 +136,15 @@ Add a project object to `projectPlaceholders` in [`shared/profileData.js`](share
 
 The Projects section and chatbot use this shared data.
 
-### Customize the developer avatar
+### Customize the developer terminal
 
-The custom avatar lives in [`src/components/DeveloperAvatar.tsx`](src/components/DeveloperAvatar.tsx). Its visual language is intentionally original: a glowing MA identity figure, canvas particles, orbit rings, hover tilt, and a button that opens the AI assistant.
+The terminal lives in [`src/components/TerminalPanel.tsx`](src/components/TerminalPanel.tsx). Its commands and outputs are generated from `shared/profileData.js`, so the visible profile stays aligned with the rest of the website.
 
-Its styling lives in [`src/theme.css`](src/theme.css). To change the avatar’s colors, position, size, or badge copy, edit the `.developer-avatar-*` rules. To move it to another section, import `DeveloperAvatar` into that section and pass the existing `onOpenAssistant` callback.
+Its styling lives in [`src/theme.css`](src/theme.css). To change terminal colors, spacing, sizing, motion speed, or responsive behavior, edit the `.terminal-*` rules. The panel also respects `prefers-reduced-motion`.
 
 ### Customize the hero
 
-The avatar is currently positioned in the right column of [`src/sections/HeroSection.tsx`](src/sections/HeroSection.tsx), beside the main introduction and calls to action. The left side keeps the personal headline, education status, resume link, projects link, and chatbot action.
+The terminal is positioned in the right column of [`src/sections/HeroSection.tsx`](src/sections/HeroSection.tsx), beside the main introduction and calls to action. The left side keeps the personal headline, education status, resume link, projects link, and chatbot action.
 
 ### Customize AI providers
 
@@ -158,8 +158,8 @@ Edit [`shared/chat.js`](shared/chat.js). It recognizes terms from the shared pro
 
 ```text
 src/
-  components/DeveloperAvatar.tsx  # Custom abstract interactive avatar
-  sections/HeroSection.tsx        # Hero layout and avatar placement
+  components/TerminalPanel.tsx    # Animated profile terminal
+  sections/HeroSection.tsx        # Hero layout and terminal placement
   theme.css                      # Editorial theme and responsive styles
 shared/
   profileData.js                 # Shared source of truth for portfolio facts

@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowDownToLine, ArrowRight, Bot } from 'lucide-react';
 import { profileData } from '../../shared/profileData.js';
-import DeveloperAvatar from '../components/DeveloperAvatar';
+import TerminalPanel from '../components/TerminalPanel';
 
 export default function HeroSection({ onChatOpen }: { onChatOpen: () => void }) {
   return (
@@ -24,7 +24,8 @@ export default function HeroSection({ onChatOpen }: { onChatOpen: () => void }) 
         </div>
 
         <div className="hero-visual-wrap">
-          <DeveloperAvatar onOpenAssistant={onChatOpen} />
+          <TerminalPanel />
+          <div className="hero-visual-note"><span>01 / PROFILE</span><span>Editable portfolio data</span></div>
         </div>
       </div>
       <div className="hero-bottom-line page-container"><span>01 / PROFILE</span><span>SOFTWARE · LEARNING · PROBLEM SOLVING</span><span>SCROLL <ArrowDown size={12} /></span></div>

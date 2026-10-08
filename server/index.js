@@ -6,6 +6,7 @@ import { createServer as createViteServer } from 'vite';
 import { codingInterests, learningJourney, projectPlaceholders, profileData, skillGroups } from '../shared/profileData.js';
 import { getProfileAnswer, isProfileQuestion } from '../shared/chat.js';
 import { hasConfiguredProvider, invokeLLM } from './llm.js';
+import { searchPortfolio } from './semanticSearch.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const app = express();
@@ -95,11 +96,25 @@ app.post('/api/chat', limitChatRequests, async (req, res) => {
       const text = payload?.choices?.[0]?.message?.content?.trim();
       if (text) return res.json({ text, fallbackUsed: false, scope: isProfileQuestion(message) ? 'profile' : 'general' });
     } catch (error) {
-      console.warn('Groq chat request failed; using local fallback.', error instanceof Error ? error.message : error);
+      console.warn('Configured AI provider request failed; using local fallback.', error instanceof Error ? error.message : error);
     }
   }
 
   if (isProfileQuestion(message)) return res.json({ ...getProfileAnswer(message), scope: 'profile' });
+
+  try {
+    const semanticMatch = await searchPortfolio(message);
+    if (semanticMatch) {
+      return res.json({
+        text: semanticMatch.answer,
+        ...(semanticMatch.actions ? { actions: semanticMatch.actions } : {}),
+        fallbackUsed: true,
+        scope: 'profile',
+      });
+    }
+  } catch (error) {
+    console.warn('Local semantic search unavailable; using scope fallback.', error instanceof Error ? error.message : error);
+  }
 
   return res.json({
     text: profileData.chat.scopeMessage,

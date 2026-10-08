@@ -7,6 +7,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
+RUN pnpm semantic:index
 RUN pnpm build
 
 ENV NODE_ENV=production

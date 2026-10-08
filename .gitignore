@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+resume-source/basic-resume-template/*.pdf
+resume-source/basic-resume-template/*.typst-diagnostics.log
+resume-source/resume-review/
+resume-source/resume-verification.json

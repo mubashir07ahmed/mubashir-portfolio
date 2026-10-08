@@ -198,3 +198,18 @@ The tests cover profile grounding, detailed project answers, skill categories, l
 - **GitHub profile:** [@mubashir07ahmed](https://github.com/mubashir07ahmed)
 - **LinkedIn:** [Mubashir Ahmed](https://www.linkedin.com/in/mubashir-ahmed-604145339/)
 - **Email:** [mubashir07ahmed@gmail.com](mailto:mubashir07ahmed@gmail.com)
+
+
+## Offline semantic fallback
+
+If no API provider is configured, the portfolio still answers personal and portfolio questions locally. It first checks the deterministic profile answers, then uses a local `all-MiniLM-L6-v2` embedding index to semantically search verified knowledge documents about Mubashir.
+
+The local index covers his identity, headline, introduction, education, college, location, interests, learning style, career direction, programming languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website, and assistant behavior. This means paraphrased questions can still work without Groq, OpenAI, Gemini, or another API key.
+
+To regenerate the local vector store after updating `shared/profileData.js` or `server/semanticKnowledge.js`:
+
+```bash
+pnpm semantic:index
+```
+
+The production container builds this semantic index automatically. If semantic confidence is low, the assistant returns the portfolio-only fallback rather than inventing personal information.

@@ -65,7 +65,7 @@ export const portfolioKnowledge = [
   },
   {
     id: 'career-goal',
-    text: profileData.careerGoal,
+    text: `What is ${profileData.name}'s main goal, future goal, or career goal? ${profileData.careerGoal}`,
     answer: profileData.careerGoal,
   },
   {
@@ -107,5 +107,55 @@ export const portfolioKnowledge = [
     id: 'assistant',
     text: 'The AI assistant on this portfolio explains Mubashir’s verified profile, projects, skills, education, achievements, resume, contact details, and website content.',
     answer: 'I’m the AI assistant on Mubashir’s portfolio. I can help you explore his education, projects, skills, achievements, resume, contact details, and this website.',
+  },
+  {
+    id: 'headline',
+    text: `${profileData.name} is a second-year B.Tech IoT student building intelligent and practical digital solutions.`,
+    answer: profileData.headline,
+  },
+  {
+    id: 'personal-introduction',
+    text: `${profileData.name} enjoys taking an idea, understanding how it works behind the scenes, and turning it into a useful software or IoT experience. ${profileData.intro}`,
+    answer: profileData.intro,
+  },
+  {
+    id: 'location',
+    text: `${profileData.name} is based in ${profileData.location}.`,
+    answer: `Mubashir is based in ${profileData.location}.`,
+  },
+  {
+    id: 'learning-style',
+    text: `${profileData.name} learns by building practical applications, understanding technology behind the scenes, experimenting with AI and full-stack workflows, and continuously improving problem solving, communication, teamwork, and analytical thinking.`,
+    answer: 'Mubashir learns by building practical applications, exploring how technology works behind the scenes, and improving through projects and collaboration.',
+  },
+  {
+    id: 'developer-direction',
+    text: `${profileData.name} is growing toward AI/ML development, full-stack development, IoT development, software engineering, automation, and practical intelligent applications.`,
+    answer: profileData.careerGoal,
+  },
+  {
+    id: 'github-profile',
+    text: `Mubashir's GitHub profile is ${profileData.codingProfiles.github}. His GitHub is the public place to explore his code and software work.`,
+    answer: `Mubashir’s GitHub profile is ${profileData.codingProfiles.github}.`,
+  },
+  {
+    id: 'leetcode-profile',
+    text: `Mubashir's LeetCode profile is ${profileData.codingProfiles.leetcode}. It is the public coding profile associated with his problem-solving practice.`,
+    answer: `Mubashir’s LeetCode profile is ${profileData.codingProfiles.leetcode}.`,
+  },
+  {
+    id: 'public-links',
+    text: `Mubashir's public links include GitHub, LeetCode, and LinkedIn. HackerRank and CodeChef links are not currently added to the portfolio.`,
+    answer: 'The portfolio currently lists public GitHub, LeetCode, and LinkedIn profiles. HackerRank and CodeChef links have not been added.',
+  },
+  {
+    id: 'portfolio-content',
+    text: 'The portfolio content covers Mubashir Ahmed’s background, education, skills, projects, learning journey, coding interests, achievements, resume, contact details, public profile links, and AI assistant.',
+    answer: 'The portfolio brings together Mubashir’s background, education, skills, projects, learning journey, achievements, resume, contact details, and public profiles.',
+  },
+  {
+    id: 'offline-semantic-assistant',
+    text: 'When no API provider is configured, the portfolio assistant uses exact local answers and a local all-MiniLM-L6-v2 semantic search index over verified personal knowledge documents. It understands paraphrased portfolio questions without inventing facts.',
+    answer: 'Without an API provider, the assistant uses local verified portfolio answers and semantic search to understand paraphrased questions.',
   },
 ];

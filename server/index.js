@@ -100,7 +100,10 @@ app.post('/api/chat', limitChatRequests, async (req, res) => {
     }
   }
 
-  if (isProfileQuestion(message)) return res.json({ ...getProfileAnswer(message), scope: 'profile' });
+  const exactLocalAnswer = isProfileQuestion(message) ? getProfileAnswer(message) : null;
+  if (exactLocalAnswer && exactLocalAnswer.text !== profileData.chat.unknown) {
+    return res.json({ ...exactLocalAnswer, scope: 'profile', fallbackUsed: true });
+  }
 
   try {
     const semanticMatch = await searchPortfolio(message);
@@ -115,6 +118,8 @@ app.post('/api/chat', limitChatRequests, async (req, res) => {
   } catch (error) {
     console.warn('Local semantic search unavailable; using scope fallback.', error instanceof Error ? error.message : error);
   }
+
+  if (exactLocalAnswer) return res.json({ ...exactLocalAnswer, scope: 'profile', fallbackUsed: true });
 
   return res.json({
     text: profileData.chat.scopeMessage,

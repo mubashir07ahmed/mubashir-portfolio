@@ -15,7 +15,7 @@ export default function JourneySection() {
               <div className="journey-item-copy"><span className="journey-step">STEP 0{index + 1} <ArrowRight size={12} /></span><h3>{item.title}</h3><p>{item.detail}</p></div>
             </li>)}
           </ol>
-          <div className="achievements-panel glass-card"><p className="eyebrow">ACHIEVEMENTS</p><div className="achievement-list">{profileData.achievements.map((achievement) => <article key={achievement.title}><img className="achievement-logo" src={achievement.logo} alt={`${achievement.organization} logo`} /><div><strong>{achievement.title}</strong><span>{achievement.organization}</span><p>{achievement.detail}</p></div></article>)}</div></div>
+          <div className="achievements-panel glass-card"><p className="eyebrow">ACHIEVEMENTS</p><div className="achievement-list">{profileData.achievements.map((achievement) => <article key={achievement.title}><img className="achievement-logo" src={achievement.logo} alt={`${achievement.organization} logo`} /><div><strong>{achievement.title}</strong><span className="achievement-organization">{achievement.organization}</span><p>{achievement.detail}</p></div></article>)}</div></div>
         </div>
       </div>
     </section>

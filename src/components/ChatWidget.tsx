@@ -63,7 +63,7 @@ function AssistantMessageText({ text }: { text: string }) {
   </div>;
 }
 
-export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export default function ChatWidget({ open, onOpenChange, initialPrompt, showLauncher = true }: { open: boolean; onOpenChange: (open: boolean) => void; initialPrompt?: string; showLauncher?: boolean }) {
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -79,6 +79,10 @@ export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOp
     else if (wasOpenRef.current) launcherRef.current?.focus();
     wasOpenRef.current = open;
   }, [open]);
+
+  useEffect(() => {
+    if (open && initialPrompt) setInput(initialPrompt);
+  }, [open, initialPrompt]);
 
   useEffect(() => {
     if (!open) return;
@@ -222,13 +226,13 @@ export default function ChatWidget({ open, onOpenChange }: { open: boolean; onOp
         </form>
       </section>}
 
-      <button ref={launcherRef} className={`chat-launcher ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close AI Chatbot' : 'Open AI Chatbot'} aria-expanded={open} aria-controls={open ? 'portfolio-chat-panel' : undefined} onClick={() => onOpenChange(!open)}>
+      {showLauncher && <button ref={launcherRef} className={`chat-launcher ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close AI Chatbot' : 'Open AI Chatbot'} aria-expanded={open} aria-controls={open ? 'portfolio-chat-panel' : undefined} onClick={() => onOpenChange(!open)}>
         <span className="chat-launcher-mark" aria-hidden="true">{open ? <X size={18} /> : <Terminal size={19} />}</span>
         <span className="chat-launcher-copy" aria-hidden="true">
           <strong>{open ? 'Close AI Chatbot' : 'AI Chatbot'}</strong>
           <small>{open ? 'terminal mode' : 'open assistant'}</small>
         </span>
-      </button>
+      </button>}
     </>
   );
 }

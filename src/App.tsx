@@ -3,6 +3,7 @@ import { ArrowUpRight, Github, Linkedin, MessageCircle } from 'lucide-react';
 import { profileData } from '../shared/profileData.js';
 import TopNav from './components/TopNav';
 import ChatWidget from './components/ChatWidget';
+import PortfolioMascot from './components/PortfolioMascot';
 import SocialLinks from './components/SocialLinks';
 import HeroSection from './sections/HeroSection';
 import AboutSection from './sections/AboutSection';
@@ -20,6 +21,7 @@ function validProfileUrl(value: string) {
 
 export default function App() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [mascotPrompt, setMascotPrompt] = useState('');
   useEffect(() => {
     const revealSelector = [
       '.page-section:not(.hero-section) .section-heading',
@@ -73,7 +75,8 @@ export default function App() {
           {footerLinks.length > 0 ? <SocialLinks links={footerLinks} /> : <div className="footer-placeholder-links"><Github size={14} /><Linkedin size={14} /><span>Social links coming when configured</span></div>}
         </div>
       </footer>
-      <ChatWidget open={chatOpen} onOpenChange={setChatOpen} />
+      <PortfolioMascot onOpenChat={(prompt) => { setMascotPrompt(prompt); setChatOpen(true); }} />
+      <ChatWidget open={chatOpen} onOpenChange={setChatOpen} initialPrompt={mascotPrompt} showLauncher={false} />
     </div>
   );
 }

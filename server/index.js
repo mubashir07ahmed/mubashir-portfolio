@@ -90,7 +90,7 @@ app.post('/api/mascot-prompt', limitChatRequests, async (req, res) => {
         },
         { role: 'user', content: `Create a contextual prompt for the ${section} section.` },
       ],
-      maxTokens: 60,
+      maxTokens: 128,
     });
     const text = payload?.choices?.[0]?.message?.content?.trim().replace(/^['"“”]|['"“”]$/g, '');
     if (text && text.length <= 140) return res.json({ text, fallbackUsed: false });

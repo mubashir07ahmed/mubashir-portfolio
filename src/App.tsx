@@ -75,7 +75,7 @@ export default function App() {
           {footerLinks.length > 0 ? <SocialLinks links={footerLinks} /> : <div className="footer-placeholder-links"><Github size={14} /><Linkedin size={14} /><span>Social links coming when configured</span></div>}
         </div>
       </footer>
-      <PortfolioMascot onOpenChat={(prompt) => { setMascotPrompt(prompt); setChatOpen(true); }} />
+      <PortfolioMascot chatOpen={chatOpen} onOpenChat={(prompt) => { setMascotPrompt(prompt); setChatOpen(true); }} />
       <ChatWidget open={chatOpen} onOpenChange={setChatOpen} initialPrompt={mascotPrompt} showLauncher={false} />
     </div>
   );

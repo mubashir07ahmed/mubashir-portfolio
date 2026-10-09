@@ -35,29 +35,49 @@ function getPrompt(section: string, index: number) {
   return options[index % options.length];
 }
 
-export default function PortfolioMascot({ onOpenChat }: { onOpenChat: (prompt: string) => void }) {
+export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: (prompt: string) => void; chatOpen: boolean }) {
   const [section, setSection] = useState('home');
   const [promptIndex, setPromptIndex] = useState(0);
   const [position, setPosition] = useState({ left: 0, top: 0 });
   const [thinking, setThinking] = useState(false);
+  const [prompt, setPrompt] = useState('Want to know what Mubashir is building?');
 
-  const prompt = useMemo(() => getPrompt(section, promptIndex), [section, promptIndex]);
+  const localPrompt = useMemo(() => getPrompt(section, promptIndex), [section, promptIndex]);
   const animation = thinking ? 'thinking' : (sectionAnimations[section] ?? 'idle');
 
   useEffect(() => {
-    const targets = sections.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    let frame = 0;
+    const updateSection = () => {
+      frame = 0;
+      const viewportCenter = window.innerHeight * 0.42;
+      const visible = sections.map((id) => document.getElementById(id)).filter(Boolean).map((element) => {
+        const rect = (element as HTMLElement).getBoundingClientRect();
+        const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+        return { id: (element as HTMLElement).id, rect, visibleHeight, distance: Math.abs(rect.top + Math.min(rect.height * .35, 240) - viewportCenter) };
+      }).filter((item) => item.visibleHeight > 20).sort((a, b) => b.visibleHeight - a.visibleHeight || a.distance - b.distance)[0];
       if (!visible) return;
-      const nextSection = (visible.target as HTMLElement).id;
       setSection((current) => {
-        if (current !== nextSection) setPromptIndex((index) => index + 1);
-        return nextSection;
+        if (current !== visible.id) setPromptIndex((index) => index + 1);
+        return visible.id;
       });
-    }, { threshold: [0.12, 0.3, 0.55], rootMargin: '-12% 0px -42% 0px' });
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
+    };
+    const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(updateSection); };
+    updateSection();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); if (frame) window.cancelAnimationFrame(frame); };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setThinking(true);
+    fetch('/api/mascot-prompt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ section }) })
+      .then((response) => response.ok ? response.json() as Promise<{ text?: string }> : Promise.reject(new Error('Mascot prompt unavailable')))
+      .then((result) => { if (!cancelled) setPrompt(result.text?.trim() || localPrompt); })
+      .catch(() => { if (!cancelled) setPrompt(localPrompt); })
+      .finally(() => { if (!cancelled) setThinking(false); });
+    return () => { cancelled = true; };
+  }, [section, promptIndex, localPrompt]);
 
   useEffect(() => {
     const updatePosition = () => {
@@ -87,6 +107,8 @@ export default function PortfolioMascot({ onOpenChat }: { onOpenChat: (prompt: s
     return () => window.clearInterval(timer);
   }, []);
 
+  if (chatOpen) return null;
+
   return (
     <aside className="portfolio-mascot" style={{ left: position.left, top: position.top }} aria-label="Portfolio assistant mascot">
       <button className="portfolio-mascot-cloud" type="button" onClick={() => onOpenChat(prompt)} aria-label={`Ask the assistant: ${prompt}`}>
@@ -96,9 +118,11 @@ export default function PortfolioMascot({ onOpenChat }: { onOpenChat: (prompt: s
       </button>
       <button className={`portfolio-mascot-body ${thinking ? 'is-thinking' : ''}`} type="button" onClick={() => onOpenChat(prompt)} aria-label="Open portfolio assistant">
         <span className="portfolio-mascot-status"><i /> online</span>
+        <svg className="portfolio-mascot-hand portfolio-mascot-hand--left" viewBox="0 0 34 44" aria-hidden="true"><path d="M25 37c-3 3-9 3-13-1L4 28c-2-2-2-5 0-7 2-2 4-2 6 0l5 5-2-16c0-3 2-5 4-5s3 1 4 4l2 12 1-6c0-3 2-4 4-4 2 1 2 3 2 5l-1 14c0 3-1 5-4 7Z" /></svg>
         <span className="portfolio-mascot-avatar" aria-hidden="true">
           <Avatar definition={strobiDefinition} animation={animation} size="92" ariaLabel="Strobi portfolio assistant avatar" />
         </span>
+        <svg className="portfolio-mascot-hand portfolio-mascot-hand--right" viewBox="0 0 34 44" aria-hidden="true"><path d="M9 37c3 3 9 3 13-1l8-8c2-2 2-5 0-7-2-2-4-2-6 0l-5 5 2-16c0-3-2-5-4-5s-3 1-4 4L11 21l-1-6c0-3-2-4-4-4-2 1-2 3-2 5l1 14c0 3 1 5 4 7Z" /></svg>
         <span className="portfolio-mascot-label"><MessageCircle size={11} aria-hidden="true" /> ask me</span>
       </button>
     </aside>

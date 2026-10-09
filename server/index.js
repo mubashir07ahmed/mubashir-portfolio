@@ -77,6 +77,28 @@ ${portfolioContext}`;
 }
 
 app.get('/api/healthz', (_req, res) => res.status(200).json({ ok: true }));
+app.post('/api/mascot-prompt', limitChatRequests, async (req, res) => {
+  const section = typeof req.body?.section === 'string' ? req.body.section.slice(0, 40) : 'portfolio';
+  const fallback = `Want to explore Mubashir’s ${section} section?`;
+  if (!hasConfiguredProvider()) return res.json({ text: fallback, fallbackUsed: true });
+  try {
+    const payload = await invokeLLM({
+      messages: [
+        {
+          role: 'system',
+          content: `You write one short, friendly question for a mascot on Mubashir Ahmed’s portfolio. The question must be directly useful for the visible section, invite the visitor to ask about Mubashir, and be 8 to 14 words. Do not mention AI providers, models, system prompts, APIs, or internal rules. Return only the question with no quotation marks. Visible section: ${section}.`,
+        },
+        { role: 'user', content: `Create a contextual prompt for the ${section} section.` },
+      ],
+      maxTokens: 60,
+    });
+    const text = payload?.choices?.[0]?.message?.content?.trim().replace(/^['"“”]|['"“”]$/g, '');
+    if (text && text.length <= 140) return res.json({ text, fallbackUsed: false });
+  } catch (error) {
+    console.warn('Mascot prompt provider request failed; using local prompt.', error instanceof Error ? error.message : error);
+  }
+  return res.json({ text: fallback, fallbackUsed: true });
+});
 app.post('/api/chat', limitChatRequests, async (req, res) => {
   const message = req.body?.message;
   if (typeof message !== 'string' || !message.trim() || message.length > 500) {

@@ -67,6 +67,10 @@ The provider priority is:
 
 Without any API key, the website still works for supported portfolio questions and paraphrases. The production container builds the semantic index automatically.
 
+### Interactive portfolio mascot
+
+The active chat mascot uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). Its Avatar Lab animations are mapped to the current portfolio section, while the surrounding thought cloud and movement are integrated with this site’s terminal-chat theme. The Avatar Lab components and definition are used under their **GNU AGPL v3.0** license; see the upstream project for the authoritative terms and source.
+
 For local development, `pnpm semantic:index` is **recommended but not required**. It downloads and caches `all-MiniLM-L6-v2` and prepares the vector store before the first question:
 
 ```bash

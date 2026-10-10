@@ -24,10 +24,10 @@ export function isProfileQuestion(rawMessage) {
   const namesMubashir = /\b(?:mohammed|mubashir|ahmed)\b/.test(question);
   const pageContext = includesAny(question, [
     'portfolio', 'on this page', 'on the website', 'this website', 'site section', 'navigation',
-    'about section', 'skills section', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests', 'ai assistant', 'chatbot', 'provider',
+    'about section', 'skills section', 'skills in progress', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests', 'ai assistant', 'chatbot', 'provider',
     'github', 'linkedin', 'leetcode', 'hackerrank', 'codechef', 'vnr', 'vjiet',
     'prompt craft', 'synthvision', 'krithomedh', 'question solver', 'answer generator', 'lost and found',
-    'to-do app', 'full-stack chatbot',
+    'to-do app', 'full-stack chatbot', 'clinical', 'patient management', 'healthcare dashboard', 'hospital operations',
   ]) || knownPageTerms.some((term) => question.includes(term));
   return namesMubashir
     || pageContext
@@ -122,7 +122,7 @@ export function getProfileAnswer(rawMessage) {
     return { text: profileText(profileData.achievements.map((item) => `${item.title} at ${item.organization}. ${item.detail}`).join(' ')) };
   }
 
-  if (/project|portfolio work|built|worked on|application|app|solver|generator|lost and found|to-do/.test(question) || projectPlaceholders.some((item) => question.includes(item.title.toLowerCase()))) {
+  if (/project|portfolio work|build(?:ing|s)?|develop(?:ing|ed|s)?|creat(?:ing|ed|e)|built|worked on|working on|making|application|app|solver|generator|lost and found|to-do|clinical|patient management|hospital operations|healthcare dashboard/.test(question) || projectPlaceholders.some((item) => question.includes(item.title.toLowerCase()))) {
     return { text: projectAnswer(question) };
   }
 

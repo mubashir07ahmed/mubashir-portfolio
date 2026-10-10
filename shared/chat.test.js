@@ -53,8 +53,11 @@ test('explicit Mubashir questions remain profile-grounded', () => {
 
 test('the chatbot can explain detailed page content', () => {
   assert.match(getLocalAnswer('Tell me about the Local AI Question Solver project').text, /extracts questions from webpages/i);
+  assert.match(getLocalAnswer('Tell me about the Clinical Task and Patient Management System').text, /healthcare operations dashboard.*patient care/s);
+  assert.match(getLocalAnswer('Tell me about Skills in progress. in Mubashir’s portfolio.').text, /Programming languages.*C, Java, Python, JavaScript/s);
   assert.match(getLocalAnswer('What is in the programming languages skill group?').text, /C, Java, Python, JavaScript/);
   assert.match(getLocalAnswer('What is Mubashir learning journey?').text, /Building AI-powered applications/i);
+  assert.match(getLocalAnswer('What is Mubashir building?').text, /AI Full-Stack Chatbot.*Local AI Question Solver.*Campus Lost & Found Match Desk/s);
   assert.match(getLocalAnswer('What are his intrests?').text, /Artificial Intelligence/i);
   assert.match(getLocalAnswer('What coding interests are shown?').text, /Artificial Intelligence.*Machine Learning/i);
   assert.match(getLocalAnswer('What sections are on this website?').text, /Home, About, Skills, Projects/i);

@@ -101,11 +101,18 @@ export const projectPlaceholders = [
     technologies: ['JavaScript', 'Full-Stack Development', 'Matching Workflows'],
     githubUrl: '', liveDemoUrl: '', previewImage: '', placeholder: false,
   },
+  {
+    title: 'Clinical Task & Patient Management System',
+    description: 'A healthcare operations dashboard for patient care, admissions, clinical tasks, department workspaces, and role-based access.',
+    categories: ['Full Stack', 'Academic'],
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Radix UI', 'Recharts', 'React Hook Form', 'Zod'],
+    githubUrl: '', liveDemoUrl: '', previewImage: '', placeholder: false,
+  },
 ];
 
 export const learningJourney = [
   { title: 'B.Tech in Internet of Things (IoT)', detail: 'VNR VJIET · 2nd year · Expected graduation 2029', kind: 'education' },
-  { title: 'Building AI-powered applications', detail: 'Developing chatbots, question solvers, answer generators, and practical automation tools that turn ideas into usable flows.', kind: 'building' },
+  { title: 'Building AI-powered applications', detail: 'Developing chatbots, question solvers, answer generators, a clinical management dashboard, and practical automation tools that turn ideas into usable flows.', kind: 'building' },
   { title: 'Exploring full-stack development', detail: 'Working across frontend, backend, APIs, databases, and browser-side automation to understand the whole product path.', kind: 'learning' },
   { title: 'Growing through competitions', detail: 'Prompt Craft winner and SynthVision Hackathon finalist at VNR VJIET, learning through teamwork and time-bound problem solving.', kind: 'growth' },
   { title: 'Continuously improving', detail: 'Strengthening problem solving, communication, teamwork, and analytical thinking one project at a time.', kind: 'exploring' },

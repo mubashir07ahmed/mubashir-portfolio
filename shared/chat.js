@@ -59,8 +59,8 @@ export function getProfileAnswer(rawMessage) {
   if (!question) return unknown();
 
   if (greetingPattern.test(question)) {
-    if (/^(?:thanks|thank you)/.test(question)) return { text: 'You’re welcome! Ask me anything about Mubashir’s portfolio, projects, skills, education, or resume.' };
-    return { text: 'Hello! I’m Mubashir’s portfolio assistant. Ask me about his projects, skills, education, achievements, or resume.' };
+    if (/^(?:thanks|thank you)/.test(question)) return { text: 'You’re welcome! I’m Novaa, Mubashir’s AI portfolio guide. Ask me about his projects, skills, education, or resume.' };
+    return { text: 'Hello! I’m Novaa, Mubashir’s AI portfolio guide. Ask me about his projects, skills, education, achievements, or resume.' };
   }
 
   if (testPattern.test(question)) {
@@ -68,15 +68,15 @@ export function getProfileAnswer(rawMessage) {
   }
 
   if (includesAny(question, assistantRoleTerms)) {
-    return { text: profileText('I’m the AI Chatbot on Mubashir Ahmed’s portfolio. I can help visitors, recruiters, and companies explore all of the information presented on this page, including his education, skills, projects, learning journey, achievements, coding profiles, contact details, and resume.') };
+    return { text: profileText('I’m Novaa, Mubashir Ahmed’s AI portfolio guide. I tell visitors, recruiters, and companies about his verified education, skills, projects, learning journey, achievements, coding profiles, contact details, and resume.') };
   }
 
   if (includesAny(question, ['what makes this portfolio different', 'why this portfolio', 'how does this portfolio work', 'what is special about this portfolio'])) {
-    return { text: profileText('The portfolio is designed to feel like a clear, honest record of Mubashir’s progress. It combines a readable editorial interface, project details, a terminal-style profile panel, a shared source of truth for the content, and an assistant that can explain the same information without inventing personal facts.') };
+    return { text: profileText('The portfolio is designed to feel like a clear, honest record of Mubashir’s progress. It combines a readable editorial interface, project details, a terminal-style profile panel, a shared source of truth for the content, and Novaa, an AI guide who explains the verified information without inventing personal facts.') };
   }
 
   if (includesAny(question, ['how does the chatbot work', 'how does the ai assistant work', 'does the chatbot need an api key', 'without an api key'])) {
-    return { text: profileText('The assistant first uses local portfolio knowledge for Mubashir’s education, projects, skills, achievements, resume, and contact details. If a server-side provider is configured, it can also answer short open-ended questions. Without a provider key, the portfolio still works and uses a concise local fallback.') };
+    return { text: profileText('Novaa uses the server-side Groq connection to answer questions about Mubashir from verified portfolio context. If Groq is unavailable, she falls back to local profile answers and semantic search; the site remains usable without an API key.') };
   }
 
   if (/resume|cv|curriculum vitae/.test(question)) {

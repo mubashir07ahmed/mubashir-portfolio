@@ -63,7 +63,7 @@ function AssistantMessageText({ text }: { text: string }) {
   </div>;
 }
 
-export default function ChatWidget({ open, onOpenChange, initialPrompt, showLauncher = true }: { open: boolean; onOpenChange: (open: boolean) => void; initialPrompt?: string; showLauncher?: boolean }) {
+export default function ChatWidget({ open, onOpenChange, initialPrompt, autoSendInitial = false, showLauncher = true }: { open: boolean; onOpenChange: (open: boolean) => void; initialPrompt?: string; autoSendInitial?: boolean; showLauncher?: boolean }) {
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -73,16 +73,13 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, showLaun
   const logRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
+  const autoSentPromptRef = useRef('');
 
   useEffect(() => {
     if (open) window.setTimeout(() => inputRef.current?.focus(), 100);
     else if (wasOpenRef.current) launcherRef.current?.focus();
     wasOpenRef.current = open;
   }, [open]);
-
-  useEffect(() => {
-    if (open && initialPrompt) setInput(initialPrompt);
-  }, [open, initialPrompt]);
 
   useEffect(() => {
     if (!open) return;
@@ -148,6 +145,19 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, showLaun
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (!open) {
+      autoSentPromptRef.current = '';
+      return;
+    }
+    if (!initialPrompt) return;
+    setInput(initialPrompt);
+    if (!autoSendInitial || autoSentPromptRef.current === initialPrompt) return;
+    autoSentPromptRef.current = initialPrompt;
+    const timer = window.setTimeout(() => void sendMessage(undefined, initialPrompt), 120);
+    return () => window.clearTimeout(timer);
+  }, [open, initialPrompt, autoSendInitial]);
+
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -162,13 +172,13 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, showLaun
   return (
     <>
       {open && <section id="portfolio-chat-panel" className="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-panel-title" aria-describedby="chat-panel-description">
-        <p id="chat-panel-description" className="sr-only">A profile assistant for Mubashir Ahmed and simple everyday questions.</p>
+        <p id="chat-panel-description" className="sr-only">Novaa is Mubashir Ahmed’s AI portfolio guide. Ask about Mubashir’s verified background, projects, skills, and learning journey.</p>
         <div className="chat-header">
           <div className="chat-avatar" aria-hidden="true"><Terminal size={18} /></div>
           <div className="chat-header-copy">
-            <span className="chat-header-kicker">MUBASHIR AHMED · SUPPORT</span>
-            <strong id="chat-panel-title">AI Chatbot</strong>
-            <span className="chat-header-subtitle">Powered by Mubashir’s profile</span>
+            <span className="chat-header-kicker">NOVAA · MUBASHIR AHMED</span>
+            <strong id="chat-panel-title">Novaa</strong>
+            <span className="chat-header-subtitle">AI guide to Mubashir</span>
           </div>
           <div className="chat-header-actions">
             <button className="chat-icon-button chat-minimize-desktop" type="button" aria-label="Minimize chat" title="Minimize" onClick={() => onOpenChange(false)}><ChevronDown size={19} /></button>
@@ -226,11 +236,11 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, showLaun
         </form>
       </section>}
 
-      {showLauncher && <button ref={launcherRef} className={`chat-launcher ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close AI Chatbot' : 'Open AI Chatbot'} aria-expanded={open} aria-controls={open ? 'portfolio-chat-panel' : undefined} onClick={() => onOpenChange(!open)}>
+      {showLauncher && <button ref={launcherRef} className={`chat-launcher ${open ? 'is-open' : ''}`} type="button" aria-label={open ? 'Close Novaa chat' : 'Ask Novaa about Mubashir'} aria-expanded={open} aria-controls={open ? 'portfolio-chat-panel' : undefined} onClick={() => onOpenChange(!open)}>
         <span className="chat-launcher-mark" aria-hidden="true">{open ? <X size={18} /> : <Terminal size={19} />}</span>
         <span className="chat-launcher-copy" aria-hidden="true">
-          <strong>{open ? 'Close AI Chatbot' : 'AI Chatbot'}</strong>
-          <small>{open ? 'terminal mode' : 'open assistant'}</small>
+          <strong>{open ? 'Close Novaa' : 'Ask Novaa'}</strong>
+          <small>{open ? 'terminal mode' : 'AI guide to Mubashir'}</small>
         </span>
       </button>}
     </>

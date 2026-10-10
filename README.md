@@ -42,34 +42,24 @@ The site includes:
 - AI chatbot with portfolio knowledge
 - Responsive navigation with reduced-motion support
 
-## AI chatbot: portfolio-only by design
+## Novaa: Mubashir’s AI portfolio guide
 
-The chatbot is intentionally focused on Mubashir’s portfolio rather than acting as a general-purpose assistant:
+Novaa is the AI agent on Mubashir Ahmed’s portfolio. Her role is to tell visitors about Mubashir—his verified background, education, skills, projects, interests, achievements, and learning journey—and help them explore the portfolio. She is not Mubashir and does not invent personal facts. Novaa stays focused on the verified portfolio rather than acting as a general-purpose assistant:
 
 1. **Portfolio knowledge always works locally.** Questions about education, skills, projects, achievements, resume, contact details, coding profiles, and the ideas behind the website use verified shared portfolio data and do not require an API key.
-2. **Semantic search works offline.** If no API provider is configured, the assistant first tries deterministic local answers and then uses a local `all-MiniLM-L6-v2` embedding index to understand paraphrased questions and retrieve the closest verified personal knowledge document.
+2. **Semantic search works locally.** If Groq is unavailable, Novaa first tries deterministic local answers and then uses a local `all-MiniLM-L6-v2` embedding index to understand paraphrased questions and retrieve the closest verified personal knowledge document.
 3. **The vector store covers the full profile.** It includes identity, headline, introduction, education, college, location, interests, learning style, career direction, languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website content, and assistant behavior.
-4. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that this assistant is limited to the portfolio.
+4. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that Novaa is here to tell visitors about Mubashir and his portfolio.
 
-### Optional provider infrastructure
+### Groq integration
 
-The repository includes secure provider wrappers for Groq, OpenAI, Gemini, and the managed Manus provider in `server/llm.js`. When a provider is configured, it can answer portfolio questions using the verified context; when no provider is available, local semantic search takes over automatically.
-
-Groq remains the recommended provider for a future controlled expansion because it is fast and offers a free developer option subject to its current account limits and model availability.
-
-The provider priority is:
-
-1. Groq
-2. OpenAI
-3. Gemini
-4. Manus managed provider
-5. Local deterministic answers and semantic search
-
-Without any API key, the website still works for supported portfolio questions and paraphrases. The production container builds the semantic index automatically.
+Groq is the only remote text-generation provider. `server/llm.js` reads the protected `GROQ_API_KEY` at runtime, and the server uses it for both Novaa’s portfolio answers and her contextual speech. Novaa’s system instructions explicitly identify her as Mubashir’s AI agent and ground her answers in the verified portfolio context. If the key is missing or Groq is unavailable, Novaa uses deterministic answers and local semantic retrieval; she never falls back to another remote provider. The production container builds the existing local semantic index automatically.
 
 ### Interactive portfolio mascot
 
-The active chat mascot uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). Its Avatar Lab animations are mapped to the current portfolio section, while the surrounding thought cloud and movement are integrated with this site’s terminal-chat theme. The Avatar Lab components and definition are used under their **GNU AGPL v3.0** license; see the upstream project for the authoritative terms and source.
+Novaa uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). On fine-pointer devices, Novaa follows the visitor within a viewport-safe area and responds to the section or content under the pointer; clicking her opens chat with a contextual question that is automatically sent. The server uses the same Groq-only `GROQ_API_KEY` path for Novaa's contextual speech as it does for portfolio chat. Idle lines rotate locally, while contextual requests are debounced and rate-spaced instead of being sent for every pointer movement. The key stays in the protected server runtime environment and is never sent to the browser.
+
+Each new speech-bubble line appears in the existing DM Mono terminal style, one Unicode character at a time, with a blinking sage block cursor. The full prompt is exposed to assistive technology as one announcement rather than character-by-character updates; reduced-motion users see the complete line immediately. Pointer-driven movement is disabled for touch and reduced-motion preferences. If Groq is unavailable or rate-limited, Novaa uses the local fallback. The Avatar Lab components and definition are used under their **GNU AGPL v3.0** license; see the upstream project for the authoritative terms and source.
 
 For local development, `pnpm semantic:index` is **recommended but not required**. It downloads and caches `all-MiniLM-L6-v2` and prepares the vector store before the first question:
 
@@ -85,14 +75,12 @@ If you skip `pnpm semantic:index`, the committed vector store is still available
 
 Set keys only on the server or hosting provider. Never put them in React code, `VITE_*` variables, GitHub, or public files.
 
-| Variable | Purpose | Default model |
+| Variable | Purpose | Default |
 | --- | --- | --- |
-| `GROQ_API_KEY` | Recommended low-cost/free-tier provider | `openai/gpt-oss-20b` |
+| `GROQ_API_KEY` | Sole remote provider for chat and Novaa prompts; set only in the server environment | `openai/gpt-oss-20b` |
 | `GROQ_MODEL` | Optional Groq model override | `openai/gpt-oss-20b` |
-| `OPENAI_API_KEY` | OpenAI fallback/provider option | `gpt-4o-mini` |
-| `OPENAI_MODEL` | Optional OpenAI model override | `gpt-4o-mini` |
-| `GEMINI_API_KEY` | Gemini fallback/provider option | `gemini-2.0-flash` |
-| `GEMINI_MODEL` | Optional Gemini model override | `gemini-2.0-flash` |
+| `RESEND_API_KEY` | Server-only credential for contact-form email delivery | None |
+| `CONTACT_EMAIL_ENABLED` | Server-side release gate; actual sends also require `NODE_ENV=production` | `false` |
 
 For local development, set the recommended key in the server environment:
 
@@ -109,7 +97,20 @@ $env:GROQ_API_KEY="your_groq_key_here"
 pnpm dev
 ```
 
-The browser only calls `/api/chat`; the provider key remains inside `server/llm.js` on the server.
+The browser calls `/api/chat` and `/api/mascot-prompt`; the Groq key remains inside `server/llm.js` on the server. The browser never receives either API key.
+
+## Contact form delivery
+
+The contact form posts to the same-origin `/api/contact` endpoint. The server validates and rate-limits submissions, checks a honeypot field, then sends a plain-text email through Resend to the contact address in `shared/profileData.js`; replies go to the visitor's submitted email. Submission content is not stored in the portfolio's database, and the visible direct-email link remains available if sending fails.
+
+The protected `RESEND_API_KEY` must have send permission. The sender is fixed server-side as `Mubashir Ahmed <contact@mail.mubashirr.in>`; it is not user-controlled or overridden by another environment value. The sending domain `mail.mubashirr.in` is verified in the [Resend Dashboard](https://resend.com/domains). For a future domain setup, publish the exact SPF/DKIM DNS records shown in its Records tab; Resend recommends a sending subdomain, existing root-domain mail records should remain intact, and Resend CNAME records should not be proxied. Sending requires both `CONTACT_EMAIL_ENABLED=true` and `NODE_ENV=production`; the production value is stored in the protected Production environment, while the additional server-side mode check prevents Development/Preview from sending. The current send-only key cannot list or manage domains, so domain configuration is managed in the Resend Dashboard.
+
+## Production deployment and delivery status
+
+- **Published deployment:** [mubashir-g2xxpp4s.manus.space](https://mubashir-g2xxpp4s.manus.space). The existing custom-domain link, [mubashirr.in](https://mubashirr.in), is retained separately.
+- **Health endpoint:** `GET /api/healthz` returns `{"ok":true}` when the production API is healthy.
+- **Production email gate:** `CONTACT_EMAIL_ENABLED` is set to the exact string `true` in the protected Production environment. Contact delivery also requires `NODE_ENV=production`; keep the Resend and Groq keys in protected server-side settings, never in source or browser bundles.
+- **Test result:** On 2026-10-09, one production contact-form test returned HTTP `202 Accepted`. This confirms the Resend API accepted the request; it does not independently confirm final inbox placement.
 
 ## Run the project locally
 
@@ -145,7 +146,7 @@ shared/
   chat.js                        # Local chatbot knowledge and safe fallbacks
 server/
   index.js                       # Express API and chat route
-  llm.js                         # Groq/OpenAI/Gemini/Manus provider wrapper
+  llm.js                         # Groq-only server-side provider wrapper
 public/
   resume/                        # Resume PDF
   manus-routes.json              # Website route manifest
@@ -153,11 +154,13 @@ public/
 
 ## Safety and hosting notes
 
-- Keep all provider keys in hosting-platform secrets or local environment variables.
+- Keep the Groq key in hosting-platform secrets or a local server environment only.
+- Keep the Resend key in hosting-platform secrets or a local server environment only; do not put it in React code or `VITE_*` variables.
 - Never commit `.env`, API keys, or `VITE_*` provider keys.
-- Users can call the public `/api/chat` endpoint, but they cannot see the provider key when the server-side setup is used.
+- Users can call the public `/api/chat` and `/api/mascot-prompt` endpoints, but cannot see the Groq key when the server-side setup is used.
+- The public `/api/contact` endpoint limits submissions, validates all fields, and never logs message contents.
 - The endpoint already limits message length and request frequency.
-- If no provider key is configured, the portfolio still works through its local knowledge and deterministic fallback.
+- If the Groq key is unavailable, the portfolio still works through its local knowledge and deterministic fallback.
 
 ## Checks
 
@@ -171,6 +174,7 @@ The tests cover profile grounding, detailed project answers, skill categories, l
 ## Links
 
 - **Live website:** [mubashirr.in](https://mubashirr.in)
+- **Manus deployment:** [mubashir-g2xxpp4s.manus.space](https://mubashir-g2xxpp4s.manus.space)
 - **Source code:** [GitHub](https://github.com/mubashir07ahmed/mubashir-portfolio)
 - **GitHub profile:** [@mubashir07ahmed](https://github.com/mubashir07ahmed)
 - **LinkedIn:** [Mubashir Ahmed](https://www.linkedin.com/in/mubashir-ahmed-604145339/)

@@ -10,7 +10,7 @@
     "semantic:index": "node scripts/build-semantic-index.mjs",
     "start": "NODE_ENV=production node server/index.js",
     "typecheck": "tsc --noEmit",
-    "test": "node --test shared/chat.test.js"
+    "test": "node --test shared/chat.test.js server/contactEmail.test.js"
   },
   "dependencies": {
     "@bible-strong/avatar-core": "0.1.0",

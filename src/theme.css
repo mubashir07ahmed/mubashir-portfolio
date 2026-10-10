@@ -299,8 +299,11 @@ img { max-width: 100%; }
 .contact-aside > p { max-width: 310px; margin: 0 0 20px; color: #53616d; font-size: 15.5px; line-height: 1.7; }
 .contact-detail { display: flex; flex-direction: column; gap: 5px; padding-top: 12px; border-top: 1px solid var(--line); }
 .contact-detail span { color: #5d6b76; font: 600 12px "DM Mono", monospace; letter-spacing: .4px; }
-.contact-detail code { color: #344451; font: 500 13px "DM Mono", monospace; overflow-wrap: anywhere; }
+.contact-email-link { display: inline-flex; align-items: center; gap: 6px; width: fit-content; color: #344451; text-decoration: none; }
+.contact-detail code { color: inherit; font: 500 13px "DM Mono", monospace; overflow-wrap: anywhere; }
+.contact-email-link:hover { color: var(--coral); }
 .contact-socials { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+.contact-email-cta { margin-top: 13px; }
 .social-link { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; color: #394955; border: 1px solid var(--line); border-radius: 7px; background: #fffefa; font-size: 13px; }
 .social-link:hover { color: var(--blue); border-color: var(--blue); }
 .social-placeholder { color: #62717b; font-size: 13px; line-height: 1.6; }
@@ -791,6 +794,8 @@ body { color: var(--text); background: radial-gradient(circle at 82% 8%, rgba(15
 .resume-copy p.resume-note { color: #d1a362; }
 .contact-aside-mark { color: #d1a362; border-color: #6b5537; background: #251e15; }
 .contact-detail { border-top-color: #3b403b; }
+.contact-email-link { color: #c5c9bf; }
+.contact-email-link:hover { color: #d1a362; }
 .contact-detail code { color: #c5c9bf; }
 .social-link { color: #c4cbc4; border-color: #454a46; background: #171a1a; }
 .social-link:hover { color: #a9cc85; border-color: #6d8b5c; }
@@ -858,6 +863,7 @@ body { color: var(--text); background: radial-gradient(circle at 82% 8%, rgba(15
 .portfolio-mascot-cloud:hover { border-color: #9ad4b1; box-shadow: 0 15px 32px rgba(19, 34, 54, .32), 0 0 0 4px rgba(154, 212, 177, .14); }
 .portfolio-mascot-cloud-kicker { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; color: #9ad4b1; font: 600 9px/1.3 "DM Mono", monospace; letter-spacing: .7px; text-transform: uppercase; }
 .portfolio-mascot-cloud strong { display: block; color: #f4f7f1; font: 600 12px/1.45 "DM Mono", monospace; }
+.portfolio-mascot-cloud .mascot-terminal-cursor { width: 6px; height: 12px; margin-left: 3px; vertical-align: -2px; background: #9ad4b1; }
 .portfolio-mascot-cloud-tail { position: absolute; right: 18px; bottom: -8px; width: 15px; height: 15px; border-right: 1px solid rgba(117, 147, 190, .58); border-bottom: 1px solid rgba(117, 147, 190, .58); background: #1a2b40; transform: rotate(45deg); }
 .portfolio-mascot-body { position: relative; display: flex; width: 92px; min-height: 112px; flex-direction: column; align-items: center; justify-content: flex-end; padding: 4px 5px 5px; border: 1px solid rgba(99, 132, 177, .55); border-radius: 25px 25px 20px 20px; background: rgba(20, 36, 55, .95); box-shadow: 0 15px 32px rgba(19, 34, 54, .24), 0 0 0 5px rgba(255, 255, 255, .3); cursor: pointer; transform: translateY(0); animation: mascot-float 3.8s ease-in-out infinite; }
 .portfolio-mascot-body:hover, .portfolio-mascot-body.is-thinking { transform: translateY(-5px) rotate(-2deg); }
@@ -914,3 +920,41 @@ body { color: var(--text); background: radial-gradient(circle at 82% 8%, rgba(15
 @media (prefers-reduced-motion: reduce) {
   .portfolio-mascot-hand { animation: none; }
 }
+
+.portfolio-mascot-body.is-thinking { animation: mascot-think 1.5s ease-in-out infinite; }
+@keyframes mascot-think { 0%, 100% { transform: translateY(0) rotate(1deg); } 35% { transform: translateY(-8px) rotate(-4deg); } 68% { transform: translateY(-3px) rotate(3deg); } }
+
+/* Novaa interaction refinements: right-side safe zone, calm pointer tracking, and unmistakable thinking. */
+.portfolio-mascot.is-pointer-aware { transition: left .34s cubic-bezier(.2, .8, .2, 1), top .34s cubic-bezier(.2, .8, .2, 1); }
+.portfolio-mascot-body.is-thinking { border-color: #f0c875; box-shadow: 0 17px 36px rgba(19, 34, 54, .3), 0 0 0 5px rgba(240, 200, 117, .18); }
+.portfolio-mascot-body.is-thinking .portfolio-mascot-avatar { transform: translateY(-3px) scale(1.05); filter: drop-shadow(0 0 9px rgba(240, 200, 117, .38)); }
+.portfolio-mascot-thinking-text { display: flex; align-items: center; min-height: 34px; color: #f0c875; font: 700 13px/1.45 "DM Mono", monospace; letter-spacing: .25px; }
+.portfolio-mascot-thinking-dots { display: inline-flex; align-items: center; gap: 2px; margin-left: 2px; }
+.portfolio-mascot-thinking-dots i { display: block; width: 3px; height: 3px; border-radius: 50%; background: #f0c875; animation: novaa-thinking-dot 1s ease-in-out infinite; }
+.portfolio-mascot-thinking-dots i:nth-child(2) { animation-delay: .14s; }
+.portfolio-mascot-thinking-dots i:nth-child(3) { animation-delay: .28s; }
+@keyframes novaa-thinking-dot { 0%, 60%, 100% { opacity: .35; transform: translateY(0) scale(.8); } 30% { opacity: 1; transform: translateY(-3px) scale(1.15); } }
+.portfolio-mascot.is-pointer-aware .portfolio-mascot-hand { animation: none; transform: rotate(var(--novaa-hand-angle, 0deg)); transition: transform .28s ease-out; }
+.portfolio-mascot.is-pointer-aware .portfolio-mascot-hand--left { transform: rotate(calc(var(--novaa-hand-angle, 0deg) + 8deg)); }
+.portfolio-mascot.is-pointer-aware .portfolio-mascot-hand--right { transform: rotate(calc(var(--novaa-hand-angle, 0deg) - 8deg)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-mascot.is-pointer-aware { transition: none !important; }
+  .portfolio-mascot.is-pointer-aware .portfolio-mascot-hand { transition: none; }
+  .portfolio-mascot-body.is-thinking, .portfolio-mascot-thinking-dots i { animation: none !important; }
+}
+
+
+/* Contact-form anti-spam field: available to bots, hidden from visitors and keyboard focus. */
+.contact-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.contact-form button:disabled { opacity: .65; cursor: wait; }

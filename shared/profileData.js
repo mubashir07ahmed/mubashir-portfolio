@@ -37,10 +37,10 @@ export const profileData = {
     { title: 'SynthVision Hackathon — Finalist', organization: 'Krithomedh AI/ML & IoT Club · VNR VJIET', logo: '/logos/krithomedh.jpg', detail: 'Finalist in the SynthVision Hackathon, collaborating on a technology-focused solution.' },
   ],
   chat: {
-    welcome: 'Hi — I’m the AI Chatbot on Mubashir’s portfolio. Ask about his education, projects, skills, learning journey, achievements, resume, or the ideas behind this website.',
+    welcome: 'Hi — I’m Novaa, Mubashir’s AI portfolio guide. Ask me about his education, projects, skills, learning journey, achievements, resume, or the ideas behind this website.',
     unknown: 'That information has not been added to Mubashir’s portfolio yet.',
     profileNote: 'This answer is specific to Mubashir’s profile.',
-    scopeMessage: 'I’m Mubashir Ahmed’s portfolio-only AI assistant. I can answer questions about his education, projects, skills, learning journey, achievements, resume, contact details, and the ideas behind this website. I can’t answer general questions, calculations, or unrelated topics.',
+    scopeMessage: 'I’m Novaa, Mubashir Ahmed’s portfolio-only AI guide. I tell visitors about his education, projects, skills, learning journey, achievements, resume, contact details, and the ideas behind this website. I can’t answer general questions, calculations, or unrelated topics.',
     suggestions: [
       'What is Mubashir currently studying?',
       'What projects has Mubashir built?',

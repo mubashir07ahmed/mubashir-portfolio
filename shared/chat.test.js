@@ -12,23 +12,23 @@ test('outside-profile questions stay restricted while simple questions work', ()
     assert.equal(isProfileQuestion(question), false, question);
   }
 
-  assert.match(getLocalAnswer('Explain quantum computing in detail').text, /portfolio-only AI assistant/i);
-  assert.match(getLocalAnswer('What is 2 + 2?').text, /portfolio-only AI assistant/i);
+  assert.match(getLocalAnswer('Explain quantum computing in detail').text, /Novaa.*portfolio-only AI guide/i);
+  assert.match(getLocalAnswer('What is 2 + 2?').text, /Novaa.*portfolio-only AI guide/i);
   assert.match(getLocalAnswer('What is AI?').text, /can’t answer general questions/i);
-  assert.match(getLocalAnswer('hiiii').text, /portfolio assistant/i);
-  assert.match(getLocalAnswer('How are you?').text, /portfolio assistant/i);
+  assert.match(getLocalAnswer('hiiii').text, /Hello! I’m Novaa.*AI portfolio guide/i);
+  assert.match(getLocalAnswer('How are you?').text, /Hello! I’m Novaa.*AI portfolio guide/i);
   assert.match(getLocalAnswer('What is a website?').text, /can’t answer general questions/i);
   assert.match(getLocalAnswer('hello').text, /Hello!/i);
   assert.match(getLocalAnswer('heloo').text, /Hello!/i);
-  assert.match(getLocalAnswer('hey there').text, /portfolio assistant/i);
+  assert.match(getLocalAnswer('hey there').text, /Hello! I’m Novaa.*AI portfolio guide/i);
   assert.match(getLocalAnswer('test').text, /I’m working/i);
   assert.match(getLocalAnswer('tst').text, /I’m working/i);
-  assert.match(getLocalAnswer('How are you?').text, /portfolio assistant/i);
+  assert.match(getLocalAnswer('How are you?').text, /Hello! I’m Novaa.*AI portfolio guide/i);
   assert.match(getLocalAnswer('thanks').text, /You’re welcome/i);
-  assert.match(getLocalAnswer('What are you?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
-  assert.match(getLocalAnswer('What can you do?').text, /help visitors, recruiters, and companies/i);
-  assert.match(getLocalAnswer('What is your role?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
-  assert.match(getLocalAnswer('What is this chatbot?').text, /AI Chatbot on Mubashir Ahmed’s portfolio/i);
+  assert.match(getLocalAnswer('What are you?').text, /I’m Novaa.*AI portfolio guide/i);
+  assert.match(getLocalAnswer('What can you do?').text, /tell visitors, recruiters, and companies about his verified education/i);
+  assert.match(getLocalAnswer('What is your role?').text, /I’m Novaa.*AI portfolio guide/i);
+  assert.match(getLocalAnswer('What is this chatbot?').text, /I’m Novaa.*AI portfolio guide/i);
   assert.equal(isProfileQuestion('What are you?'), true);
   assert.equal(isProfileQuestion('hello'), true);
   assert.equal(isProfileQuestion('test'), true);
@@ -64,5 +64,5 @@ test('the chatbot can explain detailed page content', () => {
   assert.match(getLocalAnswer("What's AI Full-Stack Chatbot?").text, /API integration/i);
   assert.match(getLocalAnswer("What's Prompt Craft?").text, /Winner/i);
   assert.match(getLocalAnswer('What makes this portfolio different?').text, /clear, honest record/i);
-  assert.match(getLocalAnswer('How does the chatbot work without an API key?').text, /local portfolio knowledge/i);
+  assert.match(getLocalAnswer('How does the chatbot work without an API key?').text, /Groq connection.*local profile answers and semantic search/i);
 });

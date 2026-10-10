@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Github, Linkedin, MessageCircle } from 'lucide-react';
 import { profileData } from '../shared/profileData.js';
 import TopNav from './components/TopNav';
+import TopProfileLinks from './components/TopProfileLinks';
 import ChatWidget from './components/ChatWidget';
 import PortfolioMascot from './components/PortfolioMascot';
+import PortfolioIntro, { shouldShowPortfolioIntro } from './components/PortfolioIntro';
 import SocialLinks from './components/SocialLinks';
 import HeroSection from './sections/HeroSection';
 import AboutSection from './sections/AboutSection';
@@ -20,8 +22,25 @@ function validProfileUrl(value: string) {
 }
 
 export default function App() {
+  const [introOpen, setIntroOpen] = useState(shouldShowPortfolioIntro);
   const [chatOpen, setChatOpen] = useState(false);
   const [mascotPrompt, setMascotPrompt] = useState('');
+  const [mascotAutoSend, setMascotAutoSend] = useState(false);
+  const previousIntroOpen = useRef(introOpen);
+
+  useEffect(() => {
+    if (!introOpen) return;
+    document.documentElement.classList.add('portfolio-intro-active');
+    return () => document.documentElement.classList.remove('portfolio-intro-active');
+  }, [introOpen]);
+
+  useEffect(() => {
+    if (previousIntroOpen.current && !introOpen) {
+      window.requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true }));
+    }
+    previousIntroOpen.current = introOpen;
+  }, [introOpen]);
+
   useEffect(() => {
     const revealSelector = [
       '.page-section:not(.hero-section) .section-heading',
@@ -41,42 +60,47 @@ export default function App() {
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
+
   const footerLinks = [
     { name: 'GitHub', url: validProfileUrl(profileData.contact.github) },
     { name: 'LinkedIn', url: validProfileUrl(profileData.contact.linkedin) },
   ].filter((link) => link.url);
 
   return (
-    <div className="site-shell">
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <TopNav onChatOpen={() => setChatOpen(true)} />
-      <main id="main-content" className="mx-auto w-full">
-        <HeroSection onChatOpen={() => setChatOpen(true)} />
-        <AboutSection />
-        <SkillsSection />
-        <ProjectsSection />
-        <JourneySection />
-        <CodingSection />
-        <ResumeSection />
-        <ContactSection />
-      </main>
-      <footer className="site-footer">
-        <div className="page-container footer-top">
-          <a className="brand footer-brand" href="#home" aria-label="Back to the top">
-            <span className="brand-mark" aria-hidden="true"><span>MA</span><i /></span>
-            <span className="brand-copy"><strong>{profileData.name}</strong><small>AI · IOT · BUILDING · LEARNING</small></span>
-          </a>
-          <p className="footer-manifesto">Building, learning, and exploring the future of intelligent software.</p>
-          <div className="footer-actions"><a href={profileData.resumePath} target="_blank" rel="noreferrer">Resume <ArrowUpRight size={14} /></a><button type="button" onClick={() => setChatOpen(true)}><MessageCircle size={14} /> Ask AI Chatbot</button></div>
-        </div>
-        <div className="page-container footer-bottom">
-          <span>© {new Date().getFullYear()} {profileData.name}</span>
-          <span className="footer-built">Built with React and curiosity.</span>
-          {footerLinks.length > 0 ? <SocialLinks links={footerLinks} /> : <div className="footer-placeholder-links"><Github size={14} /><Linkedin size={14} /><span>Social links coming when configured</span></div>}
-        </div>
-      </footer>
-      <PortfolioMascot chatOpen={chatOpen} onOpenChat={(prompt) => { setMascotPrompt(prompt); setChatOpen(true); }} />
-      <ChatWidget open={chatOpen} onOpenChange={setChatOpen} initialPrompt={mascotPrompt} showLauncher={false} />
-    </div>
+    <>
+      {introOpen && <PortfolioIntro onComplete={() => setIntroOpen(false)} />}
+      <div className="site-shell" inert={introOpen} aria-hidden={introOpen}>
+        <a className="skip-link" href="#main-content">Skip to content</a>
+        <TopProfileLinks />
+        <TopNav onChatOpen={() => setChatOpen(true)} />
+        <main id="main-content" className="mx-auto w-full" tabIndex={-1}>
+          <HeroSection onChatOpen={() => setChatOpen(true)} />
+          <AboutSection />
+          <SkillsSection />
+          <ProjectsSection />
+          <JourneySection />
+          <CodingSection />
+          <ResumeSection />
+          <ContactSection />
+        </main>
+        <footer className="site-footer">
+          <div className="page-container footer-top">
+            <a className="brand footer-brand" href="#home" aria-label="Back to the top">
+              <span className="brand-mark" aria-hidden="true"><span>MA</span><i /></span>
+              <span className="brand-copy"><strong>{profileData.name}</strong><small>AI · IOT · BUILDING · LEARNING</small></span>
+            </a>
+            <p className="footer-manifesto">Building, learning, and exploring the future of intelligent software.</p>
+            <div className="footer-actions"><a href={profileData.resumePath} target="_blank" rel="noreferrer">Resume <ArrowUpRight size={14} /></a><button type="button" onClick={() => setChatOpen(true)}><MessageCircle size={14} /> Ask Novaa</button></div>
+          </div>
+          <div className="page-container footer-bottom">
+            <span>© {new Date().getFullYear()} {profileData.name}</span>
+            <span className="footer-built">Built with React and curiosity.</span>
+            {footerLinks.length > 0 ? <SocialLinks links={footerLinks} /> : <div className="footer-placeholder-links"><Github size={14} /><Linkedin size={14} /><span>Social links coming when configured</span></div>}
+          </div>
+        </footer>
+        <PortfolioMascot chatOpen={chatOpen} onOpenChat={(_prompt, question) => { setMascotPrompt(question); setMascotAutoSend(true); setChatOpen(true); }} />
+        <ChatWidget open={chatOpen} onOpenChange={(open) => { setChatOpen(open); if (!open) setMascotAutoSend(false); }} initialPrompt={mascotPrompt} autoSendInitial={mascotAutoSend} showLauncher={false} />
+      </div>
+    </>
   );
 }

@@ -15,7 +15,7 @@ export default function HeroSection({ onChatOpen }: { onChatOpen: () => void }) 
           <div className="hero-actions">
             <a className="button button--primary" href="#projects">View my projects <ArrowRight size={17} /></a>
             <a className="button button--outline" href={profileData.resumePath} target="_blank" rel="noreferrer" download><ArrowDownToLine size={16} /> Download resume</a>
-            <button className="button button--quiet" type="button" onClick={onChatOpen}><Bot size={17} /> Ask my AI assistant</button>
+            <button className="button button--quiet" type="button" onClick={onChatOpen}><Bot size={17} /> Ask Novaa about Mubashir</button>
           </div>
           <div className="hero-badges" aria-label="Areas of focus">
             <span><i /> AI/ML enthusiast</span><span><i /> Full-stack developer</span><span><i /> Problem solver</span>

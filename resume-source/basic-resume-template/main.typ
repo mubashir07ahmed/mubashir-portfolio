@@ -48,6 +48,7 @@ B.Tech Internet of Things student at VNR Vignana Jyothi Institute of Engineering
 - *AI Answer Generator:* Developed a tool that accepts question PDFs, generates structured answers, and creates clean formatted answer PDFs.
 - *Python To-Do App:* Developed a Python application for adding, viewing, updating, and managing daily tasks.
 - *Campus Lost & Found Match Desk:* Currently developing a full-stack platform for students to report, search, and match lost and found items.
+- *Clinical Task & Patient Management System:* Built a healthcare operations dashboard for patient care, admissions, clinical tasks, department workspaces, and role-based access.
 
 == Achievements
 

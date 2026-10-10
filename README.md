@@ -107,7 +107,7 @@ The protected `RESEND_API_KEY` must have send permission. The sender is fixed se
 
 ## Production deployment and delivery status
 
-- **Published deployment:** [mubashir-g2xxpp4s.manus.space](https://mubashir-g2xxpp4s.manus.space). The existing custom-domain link, [mubashirr.in](https://mubashirr.in), is retained separately.
+- **Published deployment:** [mubashirr.in](https://mubashirr.in).
 - **Health endpoint:** `GET /api/healthz` returns `{"ok":true}` when the production API is healthy.
 - **Production email gate:** `CONTACT_EMAIL_ENABLED` is set to the exact string `true` in the protected Production environment. Contact delivery also requires `NODE_ENV=production`; keep the Resend and Groq keys in protected server-side settings, never in source or browser bundles.
 - **Test result:** On 2026-10-09, one production contact-form test returned HTTP `202 Accepted`. This confirms the Resend API accepted the request; it does not independently confirm final inbox placement.
@@ -174,7 +174,6 @@ The tests cover profile grounding, detailed project answers, skill categories, l
 ## Links
 
 - **Live website:** [mubashirr.in](https://mubashirr.in)
-- **Manus deployment:** [mubashir-g2xxpp4s.manus.space](https://mubashir-g2xxpp4s.manus.space)
 - **Source code:** [GitHub](https://github.com/mubashir07ahmed/mubashir-portfolio)
 - **GitHub profile:** [@mubashir07ahmed](https://github.com/mubashir07ahmed)
 - **LinkedIn:** [Mubashir Ahmed](https://www.linkedin.com/in/mubashir-ahmed-604145339/)

@@ -122,7 +122,7 @@ export function getProfileAnswer(rawMessage) {
     return { text: profileText(profileData.achievements.map((item) => `${item.title} at ${item.organization}. ${item.detail}`).join(' ')) };
   }
 
-  if (/project|portfolio work|built|worked on|application|app|solver|generator|lost and found|to-do/.test(question) || projectPlaceholders.some((item) => question.includes(item.title.toLowerCase()))) {
+  if (/project|portfolio work|build(?:ing|s)?|develop(?:ing|ed|s)?|creat(?:ing|ed|e)|built|worked on|working on|making|application|app|solver|generator|lost and found|to-do/.test(question) || projectPlaceholders.some((item) => question.includes(item.title.toLowerCase()))) {
     return { text: projectAnswer(question) };
   }
 

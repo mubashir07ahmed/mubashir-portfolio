@@ -11,6 +11,11 @@ const movingSkills = [
   { name: 'VS Code', icon: 'vscode' }, { name: 'SQL', icon: 'sql' }, { name: 'MySQL', icon: 'mysql' },
 ];
 const movingSkillIcons = [...movingSkills, ...movingSkills, ...movingSkills];
+const reverseMovingSkillIcons = [
+  ...movingSkills.slice(6), ...movingSkills.slice(0, 6),
+  ...movingSkills.slice(6), ...movingSkills.slice(0, 6),
+  ...movingSkills.slice(6), ...movingSkills.slice(0, 6),
+];
 
 export default function SkillsSection() {
   return (
@@ -23,7 +28,7 @@ export default function SkillsSection() {
               {movingSkillIcons.map((skill, index) => <div className="skill-marquee-item" key={`${skill.name}-forward-${index}`}><div className="skill-marquee-icon"><img src={`/assets/skill-icons/${skill.icon}.png`} alt="" /></div><span>{skill.name}</span></div>)}
             </div>
             <div className="skill-marquee-row skill-marquee-row--reverse">
-              {[...movingSkillIcons].reverse().map((skill, index) => <div className="skill-marquee-item" key={`${skill.name}-reverse-${index}`}><div className="skill-marquee-icon"><img src={`/assets/skill-icons/${skill.icon}.png`} alt="" /></div><span>{skill.name}</span></div>)}
+              {reverseMovingSkillIcons.map((skill, index) => <div className="skill-marquee-item" key={`${skill.name}-reverse-${index}`}><div className="skill-marquee-icon"><img src={`/assets/skill-icons/${skill.icon}.png`} alt="" /></div><span>{skill.name}</span></div>)}
             </div>
           </div>
           <div className="skills-grid">

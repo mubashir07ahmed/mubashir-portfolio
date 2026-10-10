@@ -177,14 +177,14 @@ img { max-width: 100%; }
 .skill-marquee { position: relative; z-index: 60; display: flex; flex-direction: column; gap: 22px; margin: 2px -8px 23px; overflow: hidden; padding: 23px 0 19px; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
 .skill-marquee-row { display: flex; width: max-content; align-items: flex-start; gap: 32px; }
 .skill-marquee-row--forward { animation: skill-marquee-forward 20s linear infinite; }
-.skill-marquee-row--reverse { margin-left: 48px; animation: skill-marquee-reverse 20s linear infinite; }
+.skill-marquee-row--reverse { margin-left: 96px; animation: skill-marquee-reverse 22s linear infinite; }
 .skill-marquee-item { display: flex; width: 64px; flex: 0 0 64px; flex-direction: column; align-items: center; gap: 8px; color: #41515d; font-size: 12px; font-weight: 600; text-align: center; }
 .skill-marquee-icon { display: grid; width: 64px; height: 64px; place-items: center; border: 2px solid color-mix(in srgb, var(--mint) 56%, var(--line)); border-radius: 50%; background: #fffefa; box-shadow: 0 8px 18px rgba(32, 43, 56, .09); transition: transform .2s ease, box-shadow .2s ease; }
 .skill-marquee-icon img { width: 34px; height: 34px; object-fit: contain; }
 .skill-marquee-item:hover .skill-marquee-icon { transform: scale(1.1); box-shadow: 0 12px 24px rgba(32, 43, 56, .15); }
 @keyframes skill-marquee-forward { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-33.3333%, 0, 0); } }
 @keyframes skill-marquee-reverse { from { transform: translate3d(-33.3333%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
-@media (max-width: 680px) { .skill-marquee-row--reverse { margin-left: 24px; } }
+@media (max-width: 680px) { .skill-marquee-row--reverse { margin-left: 48px; } }
 .section-footnote { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; color: #566670; font-size: 14px; }
 .footnote-line { display: inline-block; width: 23px; height: 2px; background: var(--mint); }
 

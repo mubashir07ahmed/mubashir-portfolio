@@ -1,0 +1,219 @@
+/* Floating section dock inspired by the reference portfolio's compact icon navigation. */
+.site-shell { padding-bottom: 92px; }
+.site-header.site-header--dock {
+  position: fixed;
+  z-index: 80;
+  top: auto;
+  right: auto;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: 50%;
+  display: flex;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 6px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(183, 202, 170, .2);
+  border-radius: 999px;
+  background: rgba(18, 22, 19, .88);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .4), 0 0 0 5px rgba(255, 255, 255, .025);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+.site-header--dock .primary-nav {
+  position: static;
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  max-height: none;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  overflow-x: auto;
+  padding: 0;
+  transform: none;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  scrollbar-width: none;
+}
+.site-header--dock .primary-nav::-webkit-scrollbar { display: none; }
+.site-header--dock .primary-nav > a {
+  position: relative;
+  display: flex;
+  min-width: 55px;
+  min-height: 48px;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 9px 4px;
+  transform: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #aab1a8;
+  font: 600 9px/1.15 "DM Sans", sans-serif;
+  opacity: 1;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.site-header--dock .primary-nav > a::after { display: none !important; }
+.site-header--dock .primary-nav > a svg { flex: 0 0 auto; transition: transform .18s ease; }
+.site-header--dock .primary-nav > a span { white-space: nowrap; }
+.site-header--dock .primary-nav > a:hover,
+.site-header--dock .primary-nav > a:focus-visible { color: #e7f1dd; background: rgba(255, 255, 255, .055); }
+.site-header--dock .primary-nav > a:hover svg { transform: translateY(-1px); }
+.site-header--dock .primary-nav > a.is-active {
+  border-color: rgba(169, 204, 133, .3);
+  color: #d9efc8;
+  background: rgba(151, 190, 113, .17);
+  box-shadow: inset 0 0 0 1px rgba(169, 204, 133, .035), 0 3px 12px rgba(95, 135, 68, .14);
+}
+.site-header--dock .primary-nav > a.is-active svg { color: #bce39c; }
+.site-header--dock .dock-chat-button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  margin-left: 5px;
+  border: 1px solid rgba(183, 202, 170, .24);
+  border-radius: 50%;
+  color: #c6d7b4;
+  background: rgba(255, 255, 255, .045);
+  cursor: pointer;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.site-header--dock .dock-chat-button:hover { transform: translateY(-1px); border-color: rgba(169, 204, 133, .48); color: #e7f1dd; background: rgba(151, 190, 113, .15); }
+.site-header--dock .dock-chat-button:focus-visible { outline: 2px solid #bce39c; outline-offset: 3px; }
+
+@media (max-width: 900px) {
+  .site-header.site-header--dock {
+    top: auto;
+    right: auto;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: 50%;
+    width: max-content;
+    max-width: calc(100vw - 18px);
+    min-height: 0;
+    padding: 5px;
+  }
+  .site-header--dock .primary-nav {
+    position: static;
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    max-height: none;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 1px;
+    overflow-x: auto;
+    padding: 0;
+    transform: none;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .site-header--dock .primary-nav > a {
+    min-width: 43px;
+    min-height: 45px;
+    flex: 0 0 auto;
+    padding: 5px 6px 4px;
+    border: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    font-size: 8px;
+    opacity: 1;
+    transform: none;
+  }
+  .site-header--dock .primary-nav > a::after { display: none !important; }
+  .site-header--dock .dock-chat-button { width: 34px; height: 34px; flex-basis: 34px; margin-left: 3px; }
+  .mobile-menu-toggle, .nav-mobile-actions, .header-actions { display: none !important; }
+}
+
+@media (max-width: 420px) {
+  .site-header.site-header--dock { max-width: calc(100vw - 14px); padding: 4px; }
+  .site-header--dock .primary-nav { gap: 0; }
+  .site-header--dock .primary-nav > a { min-width: 39px; padding: 4px 4px 3px; font-size: 7px; }
+  .site-header--dock .primary-nav > a svg { width: 14px; height: 14px; }
+  .site-header--dock .dock-chat-button { width: 30px; height: 30px; flex-basis: 30px; margin-left: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header--dock .primary-nav > a,
+  .site-header--dock .primary-nav > a svg,
+  .site-header--dock .dock-chat-button { transition: none; }
+}
+
+
+/* Compact fixed profile links, visually paired with the bottom navigation dock. */
+.profile-icon-bar {
+  position: fixed;
+  z-index: 74;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.profile-icon-link {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.profile-icon-link--github { color: #f0f6fc; }
+.profile-icon-link--linkedin { color: #0a66c2; }
+.profile-icon-link--leetcode { color: #ffa116; }
+.profile-icon-link:hover,
+.profile-icon-link:focus-visible {
+  transform: translateY(-2px) scale(1.06);
+  border-color: rgba(169, 204, 133, .3);
+  background: rgba(18, 22, 19, .8);
+}
+.profile-icon-link--github:hover { color: #fff; }
+.profile-icon-link--linkedin:hover { color: #70b5f9; }
+.profile-icon-link--leetcode:hover { color: #ffc766; }
+.profile-icon-link:focus-visible { outline: 2px solid #bce39c; outline-offset: 3px; }
+.profile-icon-mask {
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+.profile-icon-mask--github {
+  mask-image: url('/icons/github.svg');
+  -webkit-mask-image: url('/icons/github.svg');
+}
+.profile-icon-mask--leetcode {
+  mask-image: url('/icons/leetcode.svg');
+  -webkit-mask-image: url('/icons/leetcode.svg');
+}
+@media (max-width: 680px) {
+  .profile-icon-bar { top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); left: auto; gap: 5px; }
+  .profile-icon-link { width: 34px; height: 34px; flex-basis: 34px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-icon-link { transition: none; }
+}

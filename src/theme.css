@@ -157,8 +157,6 @@ img { max-width: 100%; }
 
 /* Skills */
 .skills-section { --section-accent: var(--mint); background: #eaf2eb; }
-.skills-section .section-layout { display: block; }
-.skills-section .section-heading { max-width: 355px; margin-bottom: 24px; }
 .skills-content { min-width: 0; }
 .skills-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .skill-card { min-height: 178px; padding: 18px 17px 16px; border-top: 3px solid var(--card-accent, var(--blue)); border-radius: 13px; background: color-mix(in srgb, var(--card-accent, var(--blue)) 6%, var(--panel)); box-shadow: 0 7px 18px rgba(32, 43, 56, .035); transition: border-color .2s ease, transform .2s ease, background .2s ease, box-shadow .2s ease; }
@@ -176,7 +174,7 @@ img { max-width: 100%; }
 .skill-chip-list, .tech-chip-row, .coding-chip-list { display: flex; flex-wrap: wrap; gap: 7px; }
 .skill-chip, .tech-chip, .coding-chip { display: inline-flex; align-items: center; padding: 5px 9px; color: #3c4a56; border: 1px solid rgba(32, 43, 56, .15); border-radius: 6px; background: #f5f4ef; font-size: 13px; line-height: 1.35; }
 .skill-card .skill-chip { color: color-mix(in srgb, var(--card-accent) 76%, var(--text)); border-color: color-mix(in srgb, var(--card-accent) 24%, var(--line)); background: color-mix(in srgb, var(--card-accent) 10%, var(--panel)); }
-.skill-marquee { position: relative; z-index: 60; display: flex; flex-direction: column; gap: 22px; margin: 2px 0 30px; overflow: hidden; padding: 23px 0 19px; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.skill-marquee { position: relative; z-index: 60; display: flex; flex-direction: column; gap: 22px; margin: 2px -8px 23px; overflow: hidden; padding: 23px 0 19px; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
 .skill-marquee-row { display: flex; width: max-content; align-items: flex-start; gap: 32px; }
 .skill-marquee-row--forward { animation: skill-marquee-forward 20s linear infinite; }
 .skill-marquee-row--reverse { margin-left: 48px; animation: skill-marquee-reverse 20s linear infinite; }

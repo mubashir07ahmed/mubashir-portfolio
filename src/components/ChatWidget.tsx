@@ -67,7 +67,7 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, autoSend
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [localMode, setLocalMode] = useState<'local' | 'offline' | false>(false);
+  const [localMode, setLocalMode] = useState<'offline' | false>(false);
   const [showAllSuggestions, setShowAllSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
@@ -123,7 +123,7 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, autoSend
       if (!result.ok) throw new Error('Chat service is unavailable.');
       response = await result.json() as ChatResponse;
       if (!response.text) throw new Error('The chat response was empty.');
-      setLocalMode(response.fallbackUsed ? 'local' : false);
+      setLocalMode(false);
     } catch {
       response = { ...getLocalAnswer(question), scope: isProfileQuestion(question) ? 'profile' : 'general' };
       setLocalMode('offline');
@@ -227,7 +227,6 @@ export default function ChatWidget({ open, onOpenChange, initialPrompt, autoSend
           {loading && <div className="chat-message chat-message--assistant"><span className="chat-message-avatar" aria-hidden="true"><Terminal size={14} /></span><div className="chat-bubble chat-typing" role="status" aria-label="Assistant is thinking"><span className="chat-fluid-loader" aria-hidden="true"><i /><i /><i /></span><span className="chat-thinking-text">thinking…</span></div></div>}
         </div>
 
-        {localMode === 'local' && <div className="chat-mode-note">Verified local profile answer.</div>}
         {localMode === 'offline' && <div className="chat-mode-note">AI service unavailable · local reply used.</div>}
 
         <form className="chat-compose" onSubmit={(event) => void sendMessage(event)}>

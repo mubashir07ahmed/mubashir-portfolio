@@ -160,10 +160,6 @@ app.post('/api/chat', limitChatRequests, async (req, res) => {
     return res.status(400).json({ error: 'Enter a question of up to 500 characters.' });
   }
 
-  if (/skills in progress/i.test(message)) {
-    return res.json({ ...getProfileAnswer(message), scope: 'profile', fallbackUsed: true });
-  }
-
   if (hasConfiguredProvider()) {
     try {
       const payload = await invokeLLM({

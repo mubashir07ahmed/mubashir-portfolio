@@ -103,7 +103,7 @@ export const projectPlaceholders = [
   },
   {
     title: 'Clinical Task & Patient Management System',
-    description: 'A healthcare operations dashboard designed to coordinate patient care, admissions, clinical tasks, and communication across hospital departments. It includes patient profiles, a priority-aware Kanban workflow, Laboratory, Pharmacy, and Radiology workspaces, department chat, reports, analytics, and role-based dashboard access.',
+    description: 'A healthcare operations dashboard for patient care, admissions, clinical tasks, department workspaces, and role-based access.',
     categories: ['Full Stack', 'Academic'],
     technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Radix UI', 'Recharts', 'React Hook Form', 'Zod'],
     githubUrl: '', liveDemoUrl: '', previewImage: '', placeholder: false,

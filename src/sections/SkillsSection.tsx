@@ -8,7 +8,7 @@ const movingSkills = [
   { name: 'HTML5', icon: 'html' }, { name: 'CSS3', icon: 'css' }, { name: 'JavaScript', icon: 'javascript' },
   { name: 'TypeScript', icon: 'typescript' }, { name: 'React', icon: 'react' }, { name: 'Python', icon: 'python' },
   { name: 'Java', icon: 'java' }, { name: 'Git', icon: 'git' }, { name: 'GitHub', icon: 'github' },
-  { name: 'SQL', icon: 'sql' }, { name: 'MySQL', icon: 'mysql' },
+  { name: 'VS Code', icon: 'vscode' }, { name: 'SQL', icon: 'sql' }, { name: 'MySQL', icon: 'mysql' },
 ];
 const movingSkillIcons = [...movingSkills, ...movingSkills, ...movingSkills];
 

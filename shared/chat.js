@@ -24,7 +24,7 @@ export function isProfileQuestion(rawMessage) {
   const namesMubashir = /\b(?:mohammed|mubashir|ahmed)\b/.test(question);
   const pageContext = includesAny(question, [
     'portfolio', 'on this page', 'on the website', 'this website', 'site section', 'navigation',
-    'about section', 'skills section', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests', 'ai assistant', 'chatbot', 'provider',
+    'about section', 'skills section', 'skills in progress', 'skill group', 'programming languages', 'projects section', 'learning journey', 'coding profile', 'coding interests', 'ai assistant', 'chatbot', 'provider',
     'github', 'linkedin', 'leetcode', 'hackerrank', 'codechef', 'vnr', 'vjiet',
     'prompt craft', 'synthvision', 'krithomedh', 'question solver', 'answer generator', 'lost and found',
     'to-do app', 'full-stack chatbot', 'clinical', 'patient management', 'healthcare dashboard', 'hospital operations',

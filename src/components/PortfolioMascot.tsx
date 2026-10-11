@@ -10,7 +10,7 @@ if (!validation.ok) throw new Error(`Invalid Strobi avatar definition: ${validat
 const strobiDefinition = validation.value as AvatarDefinition;
 type AnimationKey = keyof typeof strobiDefinitionJson.animations;
 
-type MascotContext = { section: string; element: string; issue: string };
+type MascotContext = { section: string; element: string; issue: string; isSectionHeading?: boolean };
 type PromptResponse = { text?: string };
 
 const sectionPrompts: Record<string, string[]> = {
@@ -42,7 +42,7 @@ function getPrompt(section: string, index: number) {
 function getChatQuestion(section: string, context: MascotContext) {
   if (context.issue) return 'How should I fix the email field?';
   const specific = context.element.trim();
-  if (specific && !/^(page content|.+ section)$/i.test(specific) && !/^(view|download|ask|follow|let’s|lets|minimize|close|send|write|show|hide|more|less|open|menu)\b/i.test(specific)) {
+  if (specific && !context.isSectionHeading && !/^(page content|.+ section)$/i.test(specific) && !/^(view|download|ask|follow|let’s|lets|minimize|close|send|write|show|hide|more|less|open|menu)\b/i.test(specific)) {
     return `Tell me about ${specific} in Mubashir’s portfolio.`;
   }
   const questions: Record<string, string> = {
@@ -64,7 +64,7 @@ function getContextFromPointer(x: number, y: number): MascotContext {
     : containerHeading?.textContent?.trim().slice(0, 60) || sectionHeading?.textContent?.trim().slice(0, 60) || `${section} section`;
   const input = element instanceof HTMLInputElement ? element : interactive instanceof HTMLInputElement ? interactive : null;
   const issue = input?.type === 'email' && input.value && !input.validity.valid ? 'The contact email field contains an invalid email address.' : '';
-  return { section, element: field, issue };
+  return { section, element: field, issue, isSectionHeading: Boolean(element?.closest('h2')) };
 }
 
 export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: (prompt: string, question: string) => void; chatOpen: boolean }) {
@@ -78,7 +78,7 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
   const [isPromptTyping, setIsPromptTyping] = useState(false);
   const [pointerActive, setPointerActive] = useState(false);
   const [isMakingRoom, setIsMakingRoom] = useState(false);
-  const [context, setContext] = useState<MascotContext>({ section: 'home', element: 'page content', issue: '' });
+  const [context, setContext] = useState<MascotContext>({ section: 'home', element: 'page content', issue: '', isSectionHeading: false });
   const lastContextRef = useRef('home|page content|');
   const pointerFrameRef = useRef(0);
   const lastPointerRef = useRef({ x: -1000, y: -1000 });

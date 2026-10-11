@@ -14,19 +14,6 @@ I am interested in **Artificial Intelligence, Machine Learning, full-stack devel
 
 My current goal is to grow into an **AI/ML, full-stack, and IoT developer** while building practical applications that solve real problems.
 
-## What I have built
-
-The portfolio currently presents these projects:
-
-- **AI Full-Stack Chatbot** — an AI-powered chatbot built through the AI Full Stack Course at VNR VJIET, covering frontend, backend, API integration, and chatbot functionality.
-- **Local AI Question Solver** — a local system that extracts questions from webpages and generates and inserts answers through a backend API and browser automation.
-- **AI Answer Generator** — a tool that accepts question PDFs, generates structured answers, and creates clean answer PDFs for study material.
-- **Python To-Do App** — a practical task-management application for adding, viewing, updating, and managing daily tasks.
-- **Campus Lost & Found Match Desk** — a full-stack platform in development for students to report, search, and match lost and found items.
-- **Clinical Task & Patient Management System** — a healthcare operations dashboard for patient care, admissions, clinical tasks, department workspaces, and role-based access.
-
-I have also participated in **Prompt Craft**, where I was a winner, and the **SynthVision Hackathon**, where I was a finalist through the Krithomedh AI/ML & IoT Club at VNR VJIET.
-
 ## What the website feels like
 
 The site uses a **dark editorial interface** with terminal-inspired details, warm off-white text, olive-green actions, amber highlights, and a calm, readable rhythm. The hero section includes a responsive developer terminal that reveals verified profile facts from the shared portfolio data with a restrained type-on effect.

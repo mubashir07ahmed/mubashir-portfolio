@@ -78,15 +78,16 @@ Set keys only on the server or hosting provider. Never put them in React code, `
 
 | Variable | Purpose | Default |
 | --- | --- | --- |
-| Protected AI API credential | Server-only credential for chat and Novaa prompts | Configure in the hosting provider |
+| AI API credential | Server-only credential for chat and Novaa prompts | Configure in the hosting provider |
 | AI model setting | Optional server-side model override | Provider default |
 | `RESEND_API_KEY` | Server-only credential for contact-form email delivery | None |
 | `CONTACT_EMAIL_ENABLED` | Server-side release gate; actual sends also require `NODE_ENV=production` | `false` |
 
-For local development, set the recommended key in the server environment:
+For local development, set an API key in the server environment. **Groq is one free-tier example**, but you can use another compatible AI API/provider by updating the server-side provider wrapper and its endpoint/model settings.
 
 ```bash
-export AI_API_KEY="your_ai_api_key_here"
+# Example free-tier provider: Groq
+export GROQ_API_KEY="your_groq_api_key_here"
 pnpm install
 pnpm dev
 ```
@@ -94,11 +95,12 @@ pnpm dev
 On Windows PowerShell:
 
 ```powershell
-$env:AI_API_KEY="your_ai_api_key_here"
+# Example free-tier provider: Groq
+$env:GROQ_API_KEY="your_groq_api_key_here"
 pnpm dev
 ```
 
-The browser calls `/api/chat` and `/api/mascot-prompt`; the AI API credential remains inside `server/llm.js` on the server. The browser never receives either API key.
+The browser calls `/api/chat` and `/api/mascot-prompt`; the AI API credential remains inside `server/llm.js` on the server. The browser never receives either API key. Any provider used here should support the server wrapper’s OpenAI-compatible chat-completions request shape.
 
 ## Contact form delivery
 

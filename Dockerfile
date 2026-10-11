@@ -10,6 +10,7 @@ COPY . .
 RUN pnpm semantic:index
 RUN pnpm build
 
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    CONTACT_EMAIL_ENABLED=true
 EXPOSE 3000
 CMD ["pnpm", "start"]

@@ -28,7 +28,7 @@ const sections = Object.keys(sectionPrompts);
 const sectionAnimations: Record<string, AnimationKey> = {
   home: 'idle', about: 'listening', skills: 'working', projects: 'curious', journey: 'searching', coding: 'thinking', resume: 'proud', contact: 'happy',
 };
-const awayMessage = 'I’m moving aside so you can write your message peacefully.';
+const awayMessage = '> I’m moving aside so you can write your message peacefully.';
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), Math.max(min, max));

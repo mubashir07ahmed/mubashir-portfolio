@@ -879,6 +879,7 @@ body { color: var(--text); background: radial-gradient(circle at 82% 8%, rgba(15
 .portfolio-mascot-cloud strong { display: block; color: #f4f7f1; font: 600 12px/1.45 "DM Mono", monospace; }
 .portfolio-mascot-cloud .mascot-terminal-cursor { width: 6px; height: 12px; margin-left: 3px; vertical-align: -2px; background: #9ad4b1; }
 .portfolio-mascot-cloud-tail { position: absolute; right: 18px; bottom: -8px; width: 15px; height: 15px; border-right: 1px solid rgba(117, 147, 190, .58); border-bottom: 1px solid rgba(117, 147, 190, .58); background: #1a2b40; transform: rotate(45deg); }
+.portfolio-mascot.is-making-room .portfolio-mascot-cloud { border-color: rgba(154, 212, 177, .72); }
 .portfolio-mascot-body { position: relative; display: flex; width: 92px; min-height: 112px; flex-direction: column; align-items: center; justify-content: flex-end; padding: 4px 5px 5px; border: 1px solid rgba(99, 132, 177, .55); border-radius: 25px 25px 20px 20px; background: rgba(20, 36, 55, .95); box-shadow: 0 15px 32px rgba(19, 34, 54, .24), 0 0 0 5px rgba(255, 255, 255, .3); cursor: pointer; transform: translateY(0); animation: mascot-float 3.8s ease-in-out infinite; }
 .portfolio-mascot-body:hover, .portfolio-mascot-body.is-thinking { transform: translateY(-5px) rotate(-2deg); }
 .portfolio-mascot-svg { display: block; width: 78px; height: 78px; overflow: visible; }

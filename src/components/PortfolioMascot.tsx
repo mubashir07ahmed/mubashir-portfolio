@@ -28,6 +28,7 @@ const sections = Object.keys(sectionPrompts);
 const sectionAnimations: Record<string, AnimationKey> = {
   home: 'idle', about: 'listening', skills: 'working', projects: 'curious', journey: 'searching', coding: 'thinking', resume: 'proud', contact: 'happy',
 };
+const awayMessage = 'I’m moving aside so you can write your message peacefully.';
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), Math.max(min, max));
@@ -76,6 +77,7 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
   const [typedPromptState, setTypedPromptState] = useState({ source: '', text: '' });
   const [isPromptTyping, setIsPromptTyping] = useState(false);
   const [pointerActive, setPointerActive] = useState(false);
+  const [isMakingRoom, setIsMakingRoom] = useState(false);
   const [context, setContext] = useState<MascotContext>({ section: 'home', element: 'page content', issue: '' });
   const lastContextRef = useRef('home|page content|');
   const pointerFrameRef = useRef(0);
@@ -86,7 +88,8 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
 
   const localPrompt = useMemo(() => getPrompt(section, promptIndex), [section, promptIndex]);
   const animation = thinking ? 'thinking' : (sectionAnimations[section] ?? 'idle');
-  const typedPrompt = typedPromptState.source === prompt ? typedPromptState.text : '';
+  const visiblePrompt = isMakingRoom ? awayMessage : prompt;
+  const typedPrompt = typedPromptState.source === visiblePrompt ? typedPromptState.text : '';
 
   const requestPrompt = async (nextContext: MascotContext, fallback = localPrompt) => {
     promptRequestRef.current?.abort();
@@ -113,12 +116,12 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
 
   useEffect(() => {
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const characters = Array.from(prompt);
+    const characters = Array.from(visiblePrompt);
     let characterIndex = 0;
     let timer: number | undefined;
     const showCompletePrompt = () => {
       if (timer !== undefined) window.clearTimeout(timer);
-      setTypedPromptState({ source: prompt, text: prompt });
+      setTypedPromptState({ source: visiblePrompt, text: visiblePrompt });
       setIsPromptTyping(false);
     };
 
@@ -127,7 +130,7 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
       return;
     }
 
-    setTypedPromptState({ source: prompt, text: '' });
+    setTypedPromptState({ source: visiblePrompt, text: '' });
     setIsPromptTyping(true);
     const onMotionPreferenceChange = () => {
       if (motionPreference.matches) showCompletePrompt();
@@ -136,7 +139,7 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
 
     const typeNextCharacter = () => {
       characterIndex += 1;
-      setTypedPromptState({ source: prompt, text: characters.slice(0, characterIndex).join('') });
+      setTypedPromptState({ source: visiblePrompt, text: characters.slice(0, characterIndex).join('') });
       if (characterIndex >= characters.length) {
         timer = undefined;
         setIsPromptTyping(false);
@@ -150,7 +153,7 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
       if (timer !== undefined) window.clearTimeout(timer);
       motionPreference.removeEventListener('change', onMotionPreferenceChange);
     };
-  }, [prompt]);
+  }, [visiblePrompt]);
 
   useEffect(() => {
     let frame = 0;
@@ -170,6 +173,7 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
         }
         return visible.id;
       });
+      setIsMakingRoom(visible.id === 'contact');
       if (!pointerActive) {
         const mascotHeight = window.innerWidth < 680 ? 188 : 228;
         const mascotWidth = window.innerWidth < 680 ? 148 : 190;
@@ -219,12 +223,14 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
         if (nextContext.section === 'contact') {
           const mascotWidth = window.innerWidth < 680 ? 148 : 190;
           setPointerActive(false);
+          setIsMakingRoom(true);
           setSection('contact');
           setPosition({ left: window.innerWidth - mascotWidth - 18, top: 82 });
           return;
         }
         const contextKey = `${nextContext.section}|${nextContext.element}|${nextContext.issue}`;
         setPointerActive(true);
+        setIsMakingRoom(false);
         const mascotWidth = window.innerWidth < 680 ? 148 : 190;
         const mascotHeight = window.innerWidth < 680 ? 188 : 228;
         const safeLeft = Math.min(window.innerWidth - mascotWidth - 16, Math.max(16, window.innerWidth * .56));
@@ -318,14 +324,14 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
   if (chatOpen) return null;
 
   return (
-    <aside className={`portfolio-mascot ${pointerActive ? 'is-pointer-aware' : ''}`} style={{ left: position.left, top: position.top, '--novaa-hand-angle': `${handAngle}deg` } as CSSProperties} aria-label="Novaa, Mubashir’s AI portfolio guide">
-      <button className="portfolio-mascot-cloud" type="button" onClick={handleCloudClick} aria-label={`Ask Novaa: ${prompt}`}>
+    <aside className={`portfolio-mascot ${pointerActive ? 'is-pointer-aware' : ''} ${isMakingRoom ? 'is-making-room' : ''}`} style={{ left: position.left, top: position.top, '--novaa-hand-angle': `${handAngle}deg` } as CSSProperties} aria-label="Novaa, Mubashir’s AI portfolio guide">
+      <button className="portfolio-mascot-cloud" type="button" onClick={handleCloudClick} aria-label={`Ask Novaa: ${visiblePrompt}`}>
         <span className="portfolio-mascot-cloud-kicker"><Sparkles size={12} aria-hidden="true" /> NOVAA · {section}</span>
-        {thinking ? <span className="portfolio-mascot-thinking-text" aria-live="polite" aria-label="Novaa is thinking">thinking<span className="portfolio-mascot-thinking-dots" aria-hidden="true"><i /><i /><i /></span></span> : <><strong className="portfolio-mascot-prompt" aria-hidden="true"><span>{typedPrompt}</span>{isPromptTyping && <span className="terminal-cursor mascot-terminal-cursor" aria-hidden="true" />}</strong><span className="sr-only" aria-live="polite" aria-atomic="true">{prompt}</span></>}
+        {thinking ? <span className="portfolio-mascot-thinking-text" aria-live="polite" aria-label="Novaa is thinking">thinking<span className="portfolio-mascot-thinking-dots" aria-hidden="true"><i /><i /><i /></span></span> : <><strong className="portfolio-mascot-prompt" aria-hidden="true"><span>{typedPrompt}</span>{isPromptTyping && <span className="terminal-cursor mascot-terminal-cursor" aria-hidden="true" />}</strong><span className="sr-only" aria-live="polite" aria-atomic="true">{visiblePrompt}</span></>}
         <span className="portfolio-mascot-cloud-tail" aria-hidden="true" />
       </button>
-      <button className={`portfolio-mascot-body ${thinking ? 'is-thinking' : ''}`} type="button" onClick={handleMascotClick} aria-label="Open chat with Novaa, Mubashir’s AI guide">
-        <span className="portfolio-mascot-status"><i /> {thinking ? 'processing' : 'Novaa online'}</span>
+      <button className={`portfolio-mascot-body ${thinking ? 'is-thinking' : ''}`} type="button" onClick={handleMascotClick} aria-label="Open chat with Novaa, Mubashir’s AI portfolio guide">
+        <span className="portfolio-mascot-status"><i /> {thinking ? 'processing' : isMakingRoom ? 'making room' : 'Novaa online'}</span>
         <svg className="portfolio-mascot-hand portfolio-mascot-hand--left" viewBox="0 0 34 44" aria-hidden="true"><path d="M25 37c-3 3-9 3-13-1L4 28c-2-2-2-5 0-7 2-2 4-2 6 0l5 5-2-16c0-3 2-5 4-5s3 1 4 4l2 12 1-6c0-3 2-4 4-4 2 1 2 3 2 5l-1 14c0 3-1 5-4 7Z" /></svg>
         <span className="portfolio-mascot-avatar" aria-hidden="true"><Avatar definition={strobiDefinition} animation={animation} size="92" ariaLabel="Novaa AI portfolio guide avatar" /></span>
         <svg className="portfolio-mascot-hand portfolio-mascot-hand--right" viewBox="0 0 34 44" aria-hidden="true"><path d="M9 37c3 3 9 3 13-1l8-8c2-2 2-5 0-7-2-2-4-2-6 0l-5 5 2-16c0-3-2-5-4-5s-3 1-4 4L11 21l-1-6c0-3-2-4-4-4-2 1-2 3-2 5l1 14c0 3 1 5 4 7Z" /></svg>

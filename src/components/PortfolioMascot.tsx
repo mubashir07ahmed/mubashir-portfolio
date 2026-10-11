@@ -173,7 +173,10 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
       if (!pointerActive) {
         const mascotHeight = window.innerWidth < 680 ? 188 : 228;
         const mascotWidth = window.innerWidth < 680 ? 148 : 190;
-        setPosition({ left: window.innerWidth - mascotWidth - 18, top: clamp(visible.rect.top + Math.min(120, visible.rect.height * .25), 82, window.innerHeight - mascotHeight - 16) });
+        const safeTop = visible.id === 'contact'
+          ? clamp(visible.rect.top + 16, 82, window.innerHeight - mascotHeight - 16)
+          : clamp(visible.rect.top + Math.min(120, visible.rect.height * .25), 82, window.innerHeight - mascotHeight - 16);
+        setPosition({ left: window.innerWidth - mascotWidth - 18, top: safeTop });
       }
     };
     const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(updateSection); };
@@ -213,6 +216,13 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
         if (distance < 28) return;
         lastPointerRef.current = { x: event.clientX, y: event.clientY };
         const nextContext = getContextFromPointer(event.clientX, event.clientY);
+        if (nextContext.section === 'contact') {
+          const mascotWidth = window.innerWidth < 680 ? 148 : 190;
+          setPointerActive(false);
+          setSection('contact');
+          setPosition({ left: window.innerWidth - mascotWidth - 18, top: 82 });
+          return;
+        }
         const contextKey = `${nextContext.section}|${nextContext.element}|${nextContext.issue}`;
         setPointerActive(true);
         const mascotWidth = window.innerWidth < 680 ? 148 : 190;

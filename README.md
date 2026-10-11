@@ -16,7 +16,7 @@ My current goal is to grow into an **AI/ML, full-stack, and IoT developer** whil
 
 ## What the website feels like
 
-The site uses a **dark editorial interface** with terminal-inspired details, warm off-white text, olive-green actions, amber highlights, and a calm, readable rhythm. The hero section includes a responsive developer terminal that reveals verified profile facts from the shared portfolio data with a restrained type-on effect.
+The site uses a **dark editorial interface** with terminal-inspired details, warm off-white text, olive-green actions, amber highlights, and a calm reading rhythm. A responsive hero terminal reveals verified profile facts with a restrained type-on effect.
 
 The site includes:
 
@@ -34,33 +34,29 @@ The site includes:
 
 This is more than a static portfolio page. It is designed as an interactive way to explore Mubashir’s work:
 
-- **Hover-aware Novaa mascot:** On desktop pointer devices, Novaa follows the visitor within a safe viewport area, detects the section or card being explored, and changes her speech bubble to offer relevant information.
-- **Contextual click-to-chat:** Clicking Novaa opens the chatbot with a question generated from the current section or hovered content, so visitors can ask about what they are already viewing instead of starting from scratch.
-- **AI-powered conversations:** When the protected AI service and API key are available, Novaa gives natural, grounded answers based on the verified portfolio data. Responses prefer a short format but can expand when the question needs more detail.
-- **Reliable local fallback:** If the provider is unavailable, profile questions still work through deterministic answers and local semantic search; API keys never reach the browser.
-- **Animated technology marquee:** The Skills section uses original technology icons in two continuously moving rows with different directions, timing, and staggered ordering so repeated icons do not sit directly above one another.
-- **Living terminal-style interface:** The hero terminal reveals profile facts with a restrained type-on animation, while Novaa’s speech bubble uses a terminal-inspired character reveal and cursor.
-- **Accessible motion design:** Touch devices do not use pointer-follow behavior, reduced-motion preferences disable decorative movement, and the full mascot prompt remains available to assistive technology.
-- **Practical portfolio actions:** Visitors can filter projects, inspect the learning journey, view or download the one-page resume, submit the contact form, and open verified public profile links.
+- **Hover-aware Novaa mascot:** On desktop pointer devices, Novaa follows the visitor within a safe area, detects the section or card being explored, and changes her speech bubble with relevant context.
+- **Contextual AI chat:** Clicking Novaa opens a question based on the current section or hovered content. Answers are grounded in verified portfolio data, short by default, and supported by local fallback answers and semantic search.
+- **Animated technology marquee:** The Skills section uses original technology icons in two continuously moving rows with different directions and staggered ordering.
+- **Accessible terminal-style interface:** The hero terminal and Novaa use restrained type-on effects; touch devices and reduced-motion preferences avoid pointer-driven movement.
+- **Practical portfolio actions:** Visitors can filter projects, explore the learning journey, view or download the resume, submit the contact form, and open verified profile links.
 
 ## Novaa: Mubashir’s AI portfolio guide
 
-Novaa is the AI agent on Mubashir Ahmed’s portfolio. Her role is to tell visitors about Mubashir—his verified background, education, skills, projects, interests, achievements, and learning journey—and help them explore the portfolio. She is not Mubashir and does not invent personal facts. Novaa stays focused on the verified portfolio rather than acting as a general-purpose assistant:
+Novaa is Mubashir Ahmed’s AI portfolio guide. She explains his verified background, education, skills, projects, interests, achievements, learning journey, and website without impersonating him or inventing facts.
 
-1. **Portfolio knowledge always works locally.** Questions about education, skills, projects, achievements, resume, contact details, coding profiles, and the ideas behind the website use verified shared portfolio data and do not require an API key.
-2. **Semantic search works locally.** If the AI API is unavailable, Novaa first tries deterministic local answers and then uses a local `all-MiniLM-L6-v2` embedding index to understand paraphrased questions and retrieve the closest verified personal knowledge document.
-3. **The vector store covers the full profile.** It includes identity, headline, introduction, education, college, location, interests, learning style, career direction, languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website content, and assistant behavior.
-4. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that Novaa is here to tell visitors about Mubashir and his portfolio.
+- **Local-first knowledge:** Portfolio questions use shared verified data and do not require an API key.
+- **Semantic fallback:** If the AI API is unavailable, deterministic answers and a local `all-MiniLM-L6-v2` index handle paraphrased questions across the full profile.
+- **Clear scope:** Unrelated questions receive a brief explanation that Novaa is focused on Mubashir and his portfolio.
 
 ### AI integration
 
-The configured AI API is the remote text-generation provider. `server/llm.js` reads its protected server-side credential at runtime and uses it for both Novaa’s portfolio answers and her contextual speech. Novaa’s system instructions identify her as Mubashir’s AI agent and ground her answers in the verified portfolio context. If the credential or service is unavailable, Novaa uses deterministic answers and local semantic retrieval. The production container builds the existing local semantic index automatically.
+The configured AI API provides remote text generation for Novaa’s portfolio answers and contextual speech. `server/llm.js` reads its protected credential at runtime, while unavailable services fall back to deterministic answers and local semantic retrieval. The production container builds the semantic index automatically.
 
 ### Interactive portfolio mascot
 
-Novaa uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). On fine-pointer devices, Novaa follows the visitor within a viewport-safe area and responds to the section or content under the pointer; clicking her opens chat with a contextual question that is automatically sent. The same protected AI API path powers Novaa’s contextual speech and portfolio chat. Idle lines rotate locally, while contextual requests are debounced and rate-spaced instead of being sent for every pointer movement. The credential stays in the protected server runtime environment and is never sent to the browser.
+Novaa uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). On fine-pointer devices she follows the visitor within a safe area, responds to the content under the pointer, and opens chat with a contextual question. Requests are debounced and rate-spaced, while the credential stays server-side.
 
-Each new speech-bubble line appears in the existing DM Mono terminal style, one Unicode character at a time, with a blinking sage block cursor. The full prompt is exposed to assistive technology as one announcement rather than character-by-character updates; reduced-motion users see the complete line immediately. Pointer-driven movement is disabled for touch and reduced-motion preferences. If the AI API is unavailable or rate-limited, Novaa uses the local fallback. The Avatar Lab components and definition are used under their **GNU AGPL v3.0** license; see the upstream project for the authoritative terms and source.
+Speech uses the DM Mono terminal style with a character reveal and blinking sage cursor. Touch and reduced-motion users receive the complete prompt without pointer-driven movement; AI failures use the local fallback. The Avatar Lab components are used under their **GNU AGPL v3.0** license; see the upstream project for authoritative terms.
 
 For local development, `pnpm semantic:index` is **recommended but not required**. It downloads and caches `all-MiniLM-L6-v2` and prepares the vector store before the first question:
 

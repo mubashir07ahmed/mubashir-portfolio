@@ -23,6 +23,7 @@ The portfolio currently presents these projects:
 - **AI Answer Generator** — a tool that accepts question PDFs, generates structured answers, and creates clean answer PDFs for study material.
 - **Python To-Do App** — a practical task-management application for adding, viewing, updating, and managing daily tasks.
 - **Campus Lost & Found Match Desk** — a full-stack platform in development for students to report, search, and match lost and found items.
+- **Clinical Task & Patient Management System** — a healthcare operations dashboard for patient care, admissions, clinical tasks, department workspaces, and role-based access.
 
 I have also participated in **Prompt Craft**, where I was a winner, and the **SynthVision Hackathon**, where I was a finalist through the Krithomedh AI/ML & IoT Club at VNR VJIET.
 
@@ -39,8 +40,21 @@ The site includes:
 - Coding interests and public profiles
 - Resume view and download actions
 - Contact form and social links
-- AI chatbot with portfolio knowledge
-- Responsive navigation with reduced-motion support
+- **AI chatbot with portfolio knowledge**
+- **Responsive navigation with reduced-motion support**
+
+## Special features
+
+This is more than a static portfolio page. It is designed as an interactive way to explore Mubashir’s work:
+
+- **Hover-aware Novaa mascot:** On desktop pointer devices, Novaa follows the visitor within a safe viewport area, detects the section or card being explored, and changes her speech bubble to offer relevant information.
+- **Contextual click-to-chat:** Clicking Novaa opens the chatbot with a question generated from the current section or hovered content, so visitors can ask about what they are already viewing instead of starting from scratch.
+- **Groq-first AI conversations:** When the protected Groq service is available, Novaa uses it for natural, grounded answers based on the verified portfolio data. Responses prefer a short format but can expand when the question needs more detail.
+- **Reliable local fallback:** If the provider is unavailable, profile questions still work through deterministic answers and local semantic search; API keys never reach the browser.
+- **Animated technology marquee:** The Skills section uses original technology icons in two continuously moving rows with different directions, timing, and staggered ordering so repeated icons do not sit directly above one another.
+- **Living terminal-style interface:** The hero terminal reveals profile facts with a restrained type-on animation, while Novaa’s speech bubble uses a terminal-inspired character reveal and cursor.
+- **Accessible motion design:** Touch devices do not use pointer-follow behavior, reduced-motion preferences disable decorative movement, and the full mascot prompt remains available to assistive technology.
+- **Practical portfolio actions:** Visitors can filter projects, inspect the learning journey, view or download the one-page resume, submit the contact form, and open verified public profile links.
 
 ## Novaa: Mubashir’s AI portfolio guide
 

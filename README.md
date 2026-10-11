@@ -61,19 +61,19 @@ This is more than a static portfolio page. It is designed as an interactive way 
 Novaa is the AI agent on Mubashir Ahmed’s portfolio. Her role is to tell visitors about Mubashir—his verified background, education, skills, projects, interests, achievements, and learning journey—and help them explore the portfolio. She is not Mubashir and does not invent personal facts. Novaa stays focused on the verified portfolio rather than acting as a general-purpose assistant:
 
 1. **Portfolio knowledge always works locally.** Questions about education, skills, projects, achievements, resume, contact details, coding profiles, and the ideas behind the website use verified shared portfolio data and do not require an API key.
-2. **Semantic search works locally.** If Groq is unavailable, Novaa first tries deterministic local answers and then uses a local `all-MiniLM-L6-v2` embedding index to understand paraphrased questions and retrieve the closest verified personal knowledge document.
+2. **Semantic search works locally.** If the AI API is unavailable, Novaa first tries deterministic local answers and then uses a local `all-MiniLM-L6-v2` embedding index to understand paraphrased questions and retrieve the closest verified personal knowledge document.
 3. **The vector store covers the full profile.** It includes identity, headline, introduction, education, college, location, interests, learning style, career direction, languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website content, and assistant behavior.
 4. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that Novaa is here to tell visitors about Mubashir and his portfolio.
 
 ### AI integration
 
-Groq is the only remote text-generation provider. `server/llm.js` reads the protected `GROQ_API_KEY` at runtime, and the server uses it for both Novaa’s portfolio answers and her contextual speech. Novaa’s system instructions explicitly identify her as Mubashir’s AI agent and ground her answers in the verified portfolio context. If the key is missing or Groq is unavailable, Novaa uses deterministic answers and local semantic retrieval; she never falls back to another remote provider. The production container builds the existing local semantic index automatically.
+The configured AI API is the remote text-generation provider. `server/llm.js` reads its protected server-side credential at runtime and uses it for both Novaa’s portfolio answers and her contextual speech. Novaa’s system instructions identify her as Mubashir’s AI agent and ground her answers in the verified portfolio context. If the credential or service is unavailable, Novaa uses deterministic answers and local semantic retrieval. The production container builds the existing local semantic index automatically.
 
 ### Interactive portfolio mascot
 
-Novaa uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). On fine-pointer devices, Novaa follows the visitor within a viewport-safe area and responds to the section or content under the pointer; clicking her opens chat with a contextual question that is automatically sent. The server uses the same Groq-only `GROQ_API_KEY` path for Novaa's contextual speech as it does for portfolio chat. Idle lines rotate locally, while contextual requests are debounced and rate-spaced instead of being sent for every pointer movement. The key stays in the protected server runtime environment and is never sent to the browser.
+Novaa uses the procedural **Strobi** avatar definition and React renderer from [Bible Strong Avatar Lab](https://github.com/smontlouis/bible-strong-avatar-lab). On fine-pointer devices, Novaa follows the visitor within a viewport-safe area and responds to the section or content under the pointer; clicking her opens chat with a contextual question that is automatically sent. The same protected AI API path powers Novaa’s contextual speech and portfolio chat. Idle lines rotate locally, while contextual requests are debounced and rate-spaced instead of being sent for every pointer movement. The credential stays in the protected server runtime environment and is never sent to the browser.
 
-Each new speech-bubble line appears in the existing DM Mono terminal style, one Unicode character at a time, with a blinking sage block cursor. The full prompt is exposed to assistive technology as one announcement rather than character-by-character updates; reduced-motion users see the complete line immediately. Pointer-driven movement is disabled for touch and reduced-motion preferences. If Groq is unavailable or rate-limited, Novaa uses the local fallback. The Avatar Lab components and definition are used under their **GNU AGPL v3.0** license; see the upstream project for the authoritative terms and source.
+Each new speech-bubble line appears in the existing DM Mono terminal style, one Unicode character at a time, with a blinking sage block cursor. The full prompt is exposed to assistive technology as one announcement rather than character-by-character updates; reduced-motion users see the complete line immediately. Pointer-driven movement is disabled for touch and reduced-motion preferences. If the AI API is unavailable or rate-limited, Novaa uses the local fallback. The Avatar Lab components and definition are used under their **GNU AGPL v3.0** license; see the upstream project for the authoritative terms and source.
 
 For local development, `pnpm semantic:index` is **recommended but not required**. It downloads and caches `all-MiniLM-L6-v2` and prepares the vector store before the first question:
 
@@ -91,15 +91,15 @@ Set keys only on the server or hosting provider. Never put them in React code, `
 
 | Variable | Purpose | Default |
 | --- | --- | --- |
-| `GROQ_API_KEY` | Sole remote provider for chat and Novaa prompts; set only in the server environment | `openai/gpt-oss-20b` |
-| `GROQ_MODEL` | Optional Groq model override | `openai/gpt-oss-20b` |
+| Protected AI API credential | Server-only credential for chat and Novaa prompts | Configure in the hosting provider |
+| AI model setting | Optional server-side model override | Provider default |
 | `RESEND_API_KEY` | Server-only credential for contact-form email delivery | None |
 | `CONTACT_EMAIL_ENABLED` | Server-side release gate; actual sends also require `NODE_ENV=production` | `false` |
 
 For local development, set the recommended key in the server environment:
 
 ```bash
-export GROQ_API_KEY="your_groq_key_here"
+export AI_API_KEY="your_ai_api_key_here"
 pnpm install
 pnpm dev
 ```
@@ -107,11 +107,11 @@ pnpm dev
 On Windows PowerShell:
 
 ```powershell
-$env:GROQ_API_KEY="your_groq_key_here"
+$env:AI_API_KEY="your_ai_api_key_here"
 pnpm dev
 ```
 
-The browser calls `/api/chat` and `/api/mascot-prompt`; the Groq key remains inside `server/llm.js` on the server. The browser never receives either API key.
+The browser calls `/api/chat` and `/api/mascot-prompt`; the AI API credential remains inside `server/llm.js` on the server. The browser never receives either API key.
 
 ## Contact form delivery
 
@@ -123,7 +123,7 @@ The protected `RESEND_API_KEY` must have send permission. The sender is fixed se
 
 - **Published deployment:** [mubashirr.in](https://mubashirr.in).
 - **Health endpoint:** `GET /api/healthz` returns `{"ok":true}` when the production API is healthy.
-- **Production email gate:** `CONTACT_EMAIL_ENABLED` is set to the exact string `true` in the protected Production environment. Contact delivery also requires `NODE_ENV=production`; keep the Resend and Groq keys in protected server-side settings, never in source or browser bundles.
+- **Production email gate:** `CONTACT_EMAIL_ENABLED` is set to the exact string `true` in the protected Production environment. Contact delivery also requires `NODE_ENV=production`; keep the Resend and AI API credentials in protected server-side settings, never in source or browser bundles.
 - **Test result:** On 2026-10-09, one production contact-form test returned HTTP `202 Accepted`. This confirms the Resend API accepted the request; it does not independently confirm final inbox placement.
 
 ## Run the project locally
@@ -160,7 +160,7 @@ shared/
   chat.js                        # Local chatbot knowledge and safe fallbacks
 server/
   index.js                       # Express API and chat route
-  llm.js                         # Groq-only server-side provider wrapper
+  llm.js                         # Server-side AI API provider wrapper
 public/
   resume/                        # Resume PDF
   manus-routes.json              # Website route manifest
@@ -168,13 +168,13 @@ public/
 
 ## Safety and hosting notes
 
-- Keep the Groq key in hosting-platform secrets or a local server environment only.
+- Keep the AI API credential in hosting-platform secrets or a local server environment only.
 - Keep the Resend key in hosting-platform secrets or a local server environment only; do not put it in React code or `VITE_*` variables.
 - Never commit `.env`, API keys, or `VITE_*` provider keys.
-- Users can call the public `/api/chat` and `/api/mascot-prompt` endpoints, but cannot see the Groq key when the server-side setup is used.
+- Users can call the public `/api/chat` and `/api/mascot-prompt` endpoints, but cannot see the AI API credential when the server-side setup is used.
 - The public `/api/contact` endpoint limits submissions, validates all fields, and never logs message contents.
 - The endpoint already limits message length and request frequency.
-- If the Groq key is unavailable, the portfolio still works through its local knowledge and deterministic fallback.
+- If the AI API credential is unavailable, the portfolio still works through its local knowledge and deterministic fallback.
 
 ## Checks
 

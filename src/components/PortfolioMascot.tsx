@@ -39,7 +39,8 @@ function getPrompt(section: string, index: number) {
   return options[index % options.length];
 }
 
-function getChatQuestion(section: string, context: MascotContext) {
+function getChatQuestion(section: string, context: MascotContext, isMakingRoom = false) {
+  if (isMakingRoom) return 'How can I contact Mubashir?';
   if (context.issue) return 'How should I fix the email field?';
   const specific = context.element.trim();
   if (specific && !context.isSectionHeading && !/^(page content|.+ section)$/i.test(specific) && !/^(view|download|ask|follow|let’s|lets|minimize|close|send|write|show|hide|more|less|open|menu)\b/i.test(specific)) {
@@ -312,13 +313,13 @@ export default function PortfolioMascot({ onOpenChat, chatOpen }: { onOpenChat: 
     if (clickTimerRef.current) window.clearTimeout(clickTimerRef.current);
     clickTimerRef.current = window.setTimeout(() => {
       setThinking(false);
-      onOpenChat(prompt, getChatQuestion(section, context));
+      onOpenChat(prompt, getChatQuestion(section, context, isMakingRoom));
     }, 220);
   };
 
   const handleCloudClick = () => {
     setPromptIndex((index) => index + 1);
-    onOpenChat(prompt, getChatQuestion(section, context));
+    onOpenChat(prompt, getChatQuestion(section, context, isMakingRoom));
   };
 
   if (chatOpen) return null;

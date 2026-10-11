@@ -41,7 +41,7 @@ function getPrompt(section: string, index: number) {
 function getChatQuestion(section: string, context: MascotContext) {
   if (context.issue) return 'How should I fix the email field?';
   const specific = context.element.trim();
-  if (specific && !/^(page content|.+ section)$/i.test(specific) && !/^(view|download|ask|follow|let’s|lets)\b/i.test(specific)) {
+  if (specific && !/^(page content|.+ section)$/i.test(specific) && !/^(view|download|ask|follow|let’s|lets|minimize|close|send|write|show|hide|more|less|open|menu)\b/i.test(specific)) {
     return `Tell me about ${specific} in Mubashir’s portfolio.`;
   }
   const questions: Record<string, string> = {

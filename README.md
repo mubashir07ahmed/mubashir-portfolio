@@ -49,7 +49,7 @@ This is more than a static portfolio page. It is designed as an interactive way 
 
 - **Hover-aware Novaa mascot:** On desktop pointer devices, Novaa follows the visitor within a safe viewport area, detects the section or card being explored, and changes her speech bubble to offer relevant information.
 - **Contextual click-to-chat:** Clicking Novaa opens the chatbot with a question generated from the current section or hovered content, so visitors can ask about what they are already viewing instead of starting from scratch.
-- **Groq-first AI conversations:** When the protected Groq service is available, Novaa uses it for natural, grounded answers based on the verified portfolio data. Responses prefer a short format but can expand when the question needs more detail.
+- **AI-powered conversations:** When the protected AI service and API key are available, Novaa gives natural, grounded answers based on the verified portfolio data. Responses prefer a short format but can expand when the question needs more detail.
 - **Reliable local fallback:** If the provider is unavailable, profile questions still work through deterministic answers and local semantic search; API keys never reach the browser.
 - **Animated technology marquee:** The Skills section uses original technology icons in two continuously moving rows with different directions, timing, and staggered ordering so repeated icons do not sit directly above one another.
 - **Living terminal-style interface:** The hero terminal reveals profile facts with a restrained type-on animation, while Novaa’s speech bubble uses a terminal-inspired character reveal and cursor.
@@ -65,7 +65,7 @@ Novaa is the AI agent on Mubashir Ahmed’s portfolio. Her role is to tell visit
 3. **The vector store covers the full profile.** It includes identity, headline, introduction, education, college, location, interests, learning style, career direction, languages, technologies, skills, projects, learning journey, achievements, resume, contact details, public profiles, website content, and assistant behavior.
 4. **Unrelated questions are declined clearly.** Calculations, general knowledge, programming help, and everyday questions receive a short explanation that Novaa is here to tell visitors about Mubashir and his portfolio.
 
-### Groq integration
+### AI integration
 
 Groq is the only remote text-generation provider. `server/llm.js` reads the protected `GROQ_API_KEY` at runtime, and the server uses it for both Novaa’s portfolio answers and her contextual speech. Novaa’s system instructions explicitly identify her as Mubashir’s AI agent and ground her answers in the verified portfolio context. If the key is missing or Groq is unavailable, Novaa uses deterministic answers and local semantic retrieval; she never falls back to another remote provider. The production container builds the existing local semantic index automatically.
 
